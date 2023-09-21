@@ -3,18 +3,15 @@ package com.utp.edu.pe.model;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.sql.Date;
-
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Table(name="estado_cita")
-@Entity
-public class EstadoCita {
+@Table(name="raza")
+public class Raza {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id_estado_cita;
-    private Date descripcion;
+    private Integer id_raza;
+    private String descripcion;
 }
