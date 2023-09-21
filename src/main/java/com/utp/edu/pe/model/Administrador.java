@@ -1,6 +1,6 @@
 package com.utp.edu.pe.model;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.*;
 
 @Getter
