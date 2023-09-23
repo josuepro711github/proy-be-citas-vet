@@ -1,2 +1,2 @@
 # proy-be-citas-vet
-Proyecto backend para veterinaria pet life
+Proyecto backend de citas y gestion para la veterinaria petlife perú
