@@ -2,9 +2,11 @@ package com.utp.edu.pe.security;
 
 
 import com.utp.edu.pe.exception.CustomOauthException;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.ResponseEntity;
 
+import org.springframework.security.authentication.event.AuthenticationFailureBadCredentialsEvent;
 import org.springframework.security.oauth2.common.exceptions.OAuth2Exception;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
@@ -13,8 +15,14 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 
 @Configuration
 @EnableAuthorizationServer
-public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
+public class OAuth2Config extends AuthorizationServerConfigurerAdapter  implements ApplicationListener<AuthenticationFailureBadCredentialsEvent> {
 
+    private AuthenticationFailureBadCredentialsEvent event;
+
+    @Override
+    public void onApplicationEvent(AuthenticationFailureBadCredentialsEvent event) {
+        this.event = event;
+    }
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer configurer) throws Exception {
 
@@ -23,10 +31,14 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
                 OAuth2Exception oAuth2Exception = (OAuth2Exception) exception;
                 return ResponseEntity
                         .status(oAuth2Exception.getHttpErrorCode())
-                        .body(new CustomOauthException(oAuth2Exception.getMessage()));
+                        .body(new CustomOauthException(oAuth2Exception.getMessage(),this.event));
+
+
             } else {
                 throw exception;
             }
         });
     }
+
+
 }

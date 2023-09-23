@@ -17,7 +17,7 @@ public class PetLifeUtil {
     private static final Logger LOG = LoggerFactory.getLogger(PetLifeUtil.class);
 
     public static HeaderRequest setHeaders(HeaderRequest headerRequest, String idTransaccion, String userId, String msgid,
-                                           String accept, String aplicacion, Date timestamp) {
+                                           String accept, String aplicacion, String timestamp) {
 
         headerRequest.setIdTransaccion(idTransaccion);
         headerRequest.setUserId(userId);
