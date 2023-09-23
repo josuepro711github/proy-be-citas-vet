@@ -7,21 +7,21 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-import javax.persistence.Entity;
+
 import java.util.Calendar;
 import java.util.Date;
+import javax.persistence.Entity;
 import javax.ws.rs.core.HttpHeaders;
 
-@Entity
+
 @Getter
 @Setter
 @NoArgsConstructor
 @ToString
-
 public class HeaderRequest {
     private String idTransaccion;
     private String msgid;
-    private Date timestamp;
+    private String timestamp;
     private String userId;
     private String accept;
     private String aplicacion;
@@ -47,11 +47,11 @@ public class HeaderRequest {
         Calendar a = PetLifeUtil.toCalendar(httpHeaders.getRequestHeader(Constantes.TIMESTAMP) != null
                 ? httpHeaders.getRequestHeader(Constantes.TIMESTAMP).get(Constantes.NUM_ZERO)
                 : Constantes.TEXTO_VACIO);
-        this.timestamp = new Date();
-        if (a != null) {
-            this.timestamp = a.getTime();
-
-        }
+       // this.timestamp = new Date();
+//        if (a != null) {
+//            this.timestamp = a.getTime();
+//
+//        }
     }
 
 }

@@ -35,8 +35,8 @@ public class ResourceConfig extends ResourceServerConfigurerAdapter {
                 .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/oauth/token").permitAll()
-                .antMatchers(HttpMethod.OPTIONS, "/**").permitAll();
-            //    .antMatchers("/usuarios/v1/lista/**").hasRole("Administrador");
+            //    .antMatchers(HttpMethod.OPTIONS, "/**").permitAll();
+                .antMatchers("/api/vet/petlife/v1.0.0/lista").hasRole("Doctor");
     }
 
     @Bean

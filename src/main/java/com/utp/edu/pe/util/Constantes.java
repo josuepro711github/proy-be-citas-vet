@@ -36,11 +36,19 @@ public class Constantes {
 
     //Paths
     public static final String BASEPATH = "/api/vet/petlife/v1.0.0";
+
+    public static final String PATH_DOCTOR = "/doctor";
     public static final String PATH_REGISTRAR_DOCTOR = "/registrarDoctor";
+
+    public static final String PATH_CLIENTE = "/cliente";
+
+    public static final String PATH_REGISTRAR_CLIENTE = "/registrarCliente";
 
     //Roles
     public static final int ROL_ADMINISTRADOR = 1;
     public static final int ROL_DOCTOR = 2;
     public static final int ROL_CLIENTE = 3;
+
+    public static final String EMAIL_PATTERN = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@" + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
 }
