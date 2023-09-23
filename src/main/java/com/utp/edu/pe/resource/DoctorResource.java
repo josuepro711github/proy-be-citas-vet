@@ -16,6 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.Date;
 
 import static com.utp.edu.pe.util.ParametroValid.*;
@@ -41,7 +42,7 @@ public class DoctorResource {
             @RequestHeader(name = "timestamp", required = false) Date timestamp,
             @RequestHeader(name = "accept", required = true) String accept,
             @RequestHeader(name = "aplicacion", required = false) String aplicacion,
-            @RequestBody(required = true) Doctor request) throws JsonProcessingException {
+            @Valid @RequestBody(required = true) Doctor request) throws JsonProcessingException {
 
         BodyResponse response = null;
         String requestPrint = null;
@@ -81,6 +82,7 @@ public class DoctorResource {
             return new ResponseEntity<BodyResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         } finally {
             responsePrint = printPrettyJSONString(response);
+            System.out.print(responsePrint);
             LOG.info(msjTx + Constantes.PARAMETROS_SALIDA + Constantes.SALTO_LINEA + responsePrint);
         }
 

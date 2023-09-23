@@ -13,7 +13,7 @@ import lombok.*;
 public class Mascota {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id_cliente;
+    private Integer id_mascota;
     private String alias;
     private String genero;
     private String fecha_nacimiento;
