@@ -9,6 +9,7 @@ import com.utp.edu.pe.util.Constantes;
 import com.utp.edu.pe.util.PropertiesInterno;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -44,11 +45,18 @@ public class MascotaServiceImpl implements MascotaService{
         String nombreImagen = imagenService.cargarImagen(imagen,fechaFormateada);
         request.setImagen(nombreImagen);
 
-        mascotaRepository.save(request);
+        try {
+            mascotaRepository.save(request);
+
+            response.setCodigoRespuesta(propertiesInterno.idf0Codigo);
+            response.setMensajeRespuesta(propertiesInterno.idf0Mensaje);
+        } catch (DataAccessException e){
+            System.out.print("Error en la base de datos: " + e + e.getMessage());
+            response.setCodigoRespuesta(propertiesInterno.idt2Codigo);
+            response.setMensajeRespuesta(propertiesInterno.idt2Mensaje.replace(Constantes.TAG_MENSAJE, e.getMessage()));
+        }
 
 
-        response.setCodigoRespuesta(propertiesInterno.idf0Codigo);
-        response.setMensajeRespuesta(propertiesInterno.idf0Mensaje);
 
         return response;
     }

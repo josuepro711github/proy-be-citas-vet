@@ -17,7 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
-import static com.utp.edu.pe.util.ParametroValid.validarRegistrarCliente;
+import static com.utp.edu.pe.util.ParametroValid.*;
 
 @RestController
 @RequestMapping(Constantes.BASEPATH+Constantes.PATH_MASCOTA)
@@ -41,20 +41,19 @@ public class MascotaResource {
 
         try {
 
-           // String validParam = validarRegistrarCliente(mascotaObj);
+            String validParam = validarRegistrarMascota(mascotaObj);
 
-//            if(Constantes.CADENA_CERO.equalsIgnoreCase(validParam)){
-            if(true){
+            if(Constantes.CADENA_CERO.equalsIgnoreCase(validParam)){
                 response = mascotaService.registrarMascota( mascotaObj,imagen);
             }else {
                 response = new BodyResponse();
                 response.setCodigoRespuesta(propertiesInterno.idf1Codigo);
-                response.setMensajeRespuesta(propertiesInterno.idf1Mensaje.replace(Constantes.TAG_PARAMETRO,/*validParam*/""));
+                response.setMensajeRespuesta(propertiesInterno.idf1Mensaje.replace(Constantes.TAG_PARAMETRO,validParam));
+
                 return new ResponseEntity<BodyResponse>(response, HttpStatus.BAD_REQUEST);
             }
 
         } catch (Exception e){
-
             response = new BodyResponse();
 
             response.setCodigoRespuesta(propertiesInterno.idt3Codigo);
