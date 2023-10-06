@@ -27,7 +27,5 @@ public class Mascota {
     @JoinColumn(name = "id_cliente",referencedColumnName = "id_cliente")
     private Cliente cliente;
 
-    @ManyToOne
-    @JoinColumn(name = "id_tipo_mascota",referencedColumnName = "id_tipo_mascota")
-    private TipoMascota tipoMascota;
+
 }
