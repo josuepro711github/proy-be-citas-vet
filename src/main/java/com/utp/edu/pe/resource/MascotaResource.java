@@ -1,11 +1,10 @@
 package com.utp.edu.pe.resource;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.utp.edu.pe.bean.BodyResponse;
-import com.utp.edu.pe.bean.HeaderRequest;
-import com.utp.edu.pe.model.Cliente;
-import com.utp.edu.pe.repository.ClienteRepository;
-import com.utp.edu.pe.service.ClienteService;
+import com.utp.edu.pe.model.Mascota;
+import com.utp.edu.pe.service.MascotaService;
 import com.utp.edu.pe.util.Constantes;
 import com.utp.edu.pe.util.PropertiesInterno;
 import org.slf4j.Logger;
@@ -14,46 +13,43 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 import static com.utp.edu.pe.util.ParametroValid.validarRegistrarCliente;
 
-import static com.utp.edu.pe.util.PetLifeUtil.printPrettyJSONString;
-import static com.utp.edu.pe.util.PetLifeUtil.setHeaders;
-
 @RestController
-@RequestMapping(Constantes.BASEPATH+Constantes.PATH_CLIENTE)
-public class ClienteResource {
+@RequestMapping(Constantes.BASEPATH+Constantes.PATH_MASCOTA)
+public class MascotaResource {
 
-    private static final Logger LOG = LoggerFactory.getLogger(ClienteResource.class);
+    private static final Logger LOG = LoggerFactory.getLogger(MascotaResource.class);
 
     @Autowired
     private PropertiesInterno propertiesInterno;
 
     @Autowired
-    private ClienteService clienterService;
+    private MascotaService mascotaService;
 
-    @PostMapping(value = Constantes.PATH_REGISTRAR_CLIENTE, consumes = "application/json", produces = "application/json")
-    public ResponseEntity<BodyResponse> registrarCliente(
-            @RequestBody Cliente request)  {
+    @PostMapping(value = Constantes.PATH_REGISTRAR_MASCOTA)
+    public ResponseEntity<BodyResponse> registrarMascota(@RequestParam("mascota")  String mascota,
+                                                         @RequestParam("imagen") MultipartFile imagen) throws JsonProcessingException {
 
+        ObjectMapper objectMapper = new ObjectMapper();
+        Mascota mascotaObj = objectMapper.readValue(mascota, Mascota.class);
         BodyResponse response = null;
 
         try {
 
-            String validParam = validarRegistrarCliente(request);
+           // String validParam = validarRegistrarCliente(mascotaObj);
 
-            if(Constantes.CADENA_CERO.equalsIgnoreCase(validParam)){
-
-                response = clienterService.registrarCliente( request);
-
+//            if(Constantes.CADENA_CERO.equalsIgnoreCase(validParam)){
+            if(true){
+                response = mascotaService.registrarMascota( mascotaObj,imagen);
             }else {
                 response = new BodyResponse();
-
                 response.setCodigoRespuesta(propertiesInterno.idf1Codigo);
-                response.setMensajeRespuesta(propertiesInterno.idf1Mensaje.replace(Constantes.TAG_PARAMETRO,validParam));
-
+                response.setMensajeRespuesta(propertiesInterno.idf1Mensaje.replace(Constantes.TAG_PARAMETRO,/*validParam*/""));
                 return new ResponseEntity<BodyResponse>(response, HttpStatus.BAD_REQUEST);
             }
 
@@ -72,16 +68,5 @@ public class ClienteResource {
 
     }
 
-
-
-
-
-    @Autowired
-    ClienteRepository repository;
-    @GetMapping(value = "/lista")
-    public ResponseEntity<List<Cliente>> listaCliente(){
-        List<Cliente> lista =   repository.findAll();
-        return new ResponseEntity<>(lista,HttpStatus.OK);
-    }
 
 }
