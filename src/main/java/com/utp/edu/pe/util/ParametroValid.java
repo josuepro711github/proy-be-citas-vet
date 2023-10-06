@@ -9,6 +9,7 @@ import com.utp.edu.pe.model.Doctor;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -68,12 +69,12 @@ public class ParametroValid {
 
     public static String validarRegistrarMascota(Mascota request) throws ConvertException {
         String validMascota = Constantes.CADENA_CERO;
-        boolean validFecha = validarFecha(request.getFecha_nacimiento());
 
         try {
-            if (null == request.getFecha_nacimiento() || !validFecha) {
+            String validFecha = validarFecha(request);
+            if (!validFecha.equals("")) {
                 validMascota = "fechaNacimiento";
-                throw new ConvertException(validMascota);
+                throw new ConvertException(validMascota+" - "+validFecha);
             }
             if (null == request.getCliente().getId_cliente()) {
                 validMascota = "idCliente";
@@ -96,22 +97,24 @@ public class ParametroValid {
         return validMascota;
     }
 
-    private static Boolean validarFecha(String fecha) throws ConvertException {
-        Boolean valid = false;
+    private static String validarFecha(Mascota request)  {
 
+        String valid = "";
+        if(request.getFecha_nacimiento() == null){
+            return "es nulo";
+        }
         // Expresión regular para validar el formato de fecha
         String regex = "\\d{4}-\\d{2}-\\d{2}";
-
         // Verifica si el string coincide con el formato de fecha
-        if (Pattern.matches(regex, fecha)) {
+        if (Pattern.matches(regex, request.getFecha_nacimiento())) {
             // El formato es correcto, ahora verifica si la fecha es válida
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             dateFormat.setLenient(false);
             try {
-                dateFormat.parse(fecha);
-                valid = true;
+                dateFormat.parse(request.getFecha_nacimiento());
+
             } catch (ParseException e) {
-                throw new ConvertException(e.getMessage());
+                valid = e.getMessage();
             }
         }
         return valid;
@@ -124,3 +127,6 @@ public class ParametroValid {
     }
 
 }
+
+
+

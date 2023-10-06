@@ -35,11 +35,12 @@ public class MascotaResource {
     public ResponseEntity<BodyResponse> registrarMascota(@RequestParam("mascota")  String mascota,
                                                          @RequestParam("imagen") MultipartFile imagen) throws JsonProcessingException {
 
-        ObjectMapper objectMapper = new ObjectMapper();
-        Mascota mascotaObj = objectMapper.readValue(mascota, Mascota.class);
+
         BodyResponse response = null;
 
         try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            Mascota mascotaObj = objectMapper.readValue(mascota, Mascota.class);
 
             String validParam = validarRegistrarMascota(mascotaObj);
 
@@ -54,10 +55,11 @@ public class MascotaResource {
             }
 
         } catch (Exception e){
+            System.out.println("e + "+e.getMessage());
             response = new BodyResponse();
 
             response.setCodigoRespuesta(propertiesInterno.idt3Codigo);
-            response.setMensajeRespuesta(propertiesInterno.idt3Mensaje.replace(Constantes.TAG_MENSAJE,e.toString()));
+            response.setMensajeRespuesta(propertiesInterno.idt3Mensaje.replace(Constantes.TAG_MENSAJE,e.getMessage()));
 
             return new ResponseEntity<BodyResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         }
