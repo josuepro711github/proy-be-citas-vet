@@ -9,7 +9,6 @@ import com.utp.edu.pe.model.Doctor;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -69,12 +68,11 @@ public class ParametroValid {
 
     public static String validarRegistrarMascota(Mascota request) throws ConvertException {
         String validMascota = Constantes.CADENA_CERO;
-
+        String validFecha = validarFecha(request);
         try {
-            String validFecha = validarFecha(request);
-            if (!validFecha.equals("")) {
+            if (!validFecha.equals(Constantes.TEXTO_VACIO)) {
                 validMascota = "fechaNacimiento";
-                throw new ConvertException(validMascota+" - "+validFecha);
+                throw new ConvertException(validMascota + Constantes.GUION + validFecha);
             }
             if (null == request.getCliente().getId_cliente()) {
                 validMascota = "idCliente";
@@ -97,18 +95,21 @@ public class ParametroValid {
         return validMascota;
     }
 
-    private static String validarFecha(Mascota request)  {
+    private static String validarFecha(Mascota request) {
 
         String valid = "";
-        if(request.getFecha_nacimiento() == null){
-            return "es nulo";
+        if (request.getFecha_nacimiento() == null) {
+            return Constantes.ES_NULO;
         }
+
         // Expresión regular para validar el formato de fecha
         String regex = "\\d{4}-\\d{2}-\\d{2}";
+
         // Verifica si el string coincide con el formato de fecha
         if (Pattern.matches(regex, request.getFecha_nacimiento())) {
+
             // El formato es correcto, ahora verifica si la fecha es válida
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat dateFormat = new SimpleDateFormat(Constantes.FORMATO_FECHA);
             dateFormat.setLenient(false);
             try {
                 dateFormat.parse(request.getFecha_nacimiento());

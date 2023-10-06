@@ -10,8 +10,11 @@ import com.utp.edu.pe.util.PropertiesInterno;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -50,10 +53,10 @@ public class MascotaServiceImpl implements MascotaService{
 
             response.setCodigoRespuesta(propertiesInterno.idf0Codigo);
             response.setMensajeRespuesta(propertiesInterno.idf0Mensaje);
-        } catch (DataAccessException e){
-            System.out.print("Error en la base de datos: " + e + e.getMessage());
+        } catch (DataIntegrityViolationException e){
+
             response.setCodigoRespuesta(propertiesInterno.idt2Codigo);
-            response.setMensajeRespuesta(propertiesInterno.idt2Mensaje.replace(Constantes.TAG_MENSAJE, e.getMessage()));
+            response.setMensajeRespuesta(propertiesInterno.idt2Mensaje.replace(Constantes.TAG_MENSAJE, e.getRootCause().getMessage()));
         }
 
 
