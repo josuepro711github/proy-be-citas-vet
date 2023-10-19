@@ -56,12 +56,11 @@ public class DoctorResource {
         String msjTx = Constantes.CHAR_CORCHETE_IZQUIERDO + Constantes.REGISTRAR_DOCTOR + Constantes.ID_TXT + idTransaccion
                 + Constantes.MSG_ID + headerRequest.getMsgid() + Constantes.CHAR_CORCHETE_DERECHO;
 
-        System.out.println("inicio");
 
         System.out.print(responsePrint);
 
         try {
-            System.out.println("inicio2");
+
             String validParam = validarRegistrarDoctor(request);
             requestPrint = printPrettyJSONString(request);
 

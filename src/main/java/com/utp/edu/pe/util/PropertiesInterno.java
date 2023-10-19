@@ -21,6 +21,11 @@ public class PropertiesInterno {
     public String idf2Mensaje;
 
     //ERRORES TECNICOS
+    @Value("${idt2.codigo}")
+    public String idt2Codigo;
+    @Value("${idt2.mensaje}")
+    public String idt2Mensaje;
+
     @Value("${idt3.codigo}")
     public String idt3Codigo;
     @Value("${idt3.mensaje}")
