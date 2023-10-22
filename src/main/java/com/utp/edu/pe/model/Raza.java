@@ -17,7 +17,5 @@ public class Raza {
     private Integer id_raza;
     private String descripcion;
 
-    @ManyToOne
-    @JoinColumn(name = "id_tipo_mascota",referencedColumnName = "id_tipo_mascota")
-    private TipoMascota tipo_mascota;
+
 }
