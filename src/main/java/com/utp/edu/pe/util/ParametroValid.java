@@ -20,7 +20,7 @@ public class ParametroValid {
         String validCodeRegistrarDoctor = Constantes.CADENA_CERO;
 
         try {
-            if (null == request.getNombre() || Constantes.TEXTO_VACIO.equalsIgnoreCase(request.getNombre().trim())) {
+            if (null == request.getUsuario().getNombre() || Constantes.TEXTO_VACIO.equalsIgnoreCase(request.getUsuario().getNombre().trim())) {
                 validCodeRegistrarDoctor = "nombre";
                 System.out.println("nombre");
                 throw new ConvertException(validCodeRegistrarDoctor);
@@ -45,7 +45,7 @@ public class ParametroValid {
         String validCodeRegistrarDoctor = Constantes.CADENA_CERO;
 
         try {
-            if (null == request.getNombre() || Constantes.TEXTO_VACIO.equalsIgnoreCase(request.getNombre().trim())) {
+            if (null == request.getUsuario().getNombre() || Constantes.TEXTO_VACIO.equalsIgnoreCase(request.getUsuario().getNombre().trim())) {
                 validCodeRegistrarDoctor = "nombre";
                 System.out.println("nombre");
                 throw new ConvertException(validCodeRegistrarDoctor);
