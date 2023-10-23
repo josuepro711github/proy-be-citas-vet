@@ -33,8 +33,7 @@ public class MascotaResource {
 
     @PostMapping(value = Constantes.PATH_REGISTRAR_MASCOTA)
     public ResponseEntity<BodyResponse> registrarMascota(@RequestParam("mascota")  String mascota,
-                                                         @RequestParam("imagen") MultipartFile imagen) throws JsonProcessingException {
-
+                                                         @RequestParam("imagen") MultipartFile imagen)  {
 
         BodyResponse response = null;
 
@@ -55,7 +54,6 @@ public class MascotaResource {
             }
 
         } catch (Exception e){
-            System.out.println("e + "+e.getMessage());
             response = new BodyResponse();
 
             response.setCodigoRespuesta(propertiesInterno.idt3Codigo);

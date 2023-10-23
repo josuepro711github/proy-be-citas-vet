@@ -7,15 +7,18 @@ import com.utp.edu.pe.repository.MascotaRepository;
 
 import com.utp.edu.pe.util.Constantes;
 import com.utp.edu.pe.util.PropertiesInterno;
+import org.hibernate.HibernateException;
+import org.hibernate.exception.SQLGrammarException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.http.HttpStatus;
+import org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -53,13 +56,12 @@ public class MascotaServiceImpl implements MascotaService{
 
             response.setCodigoRespuesta(propertiesInterno.idf0Codigo);
             response.setMensajeRespuesta(propertiesInterno.idf0Mensaje);
-        } catch (DataIntegrityViolationException e){
+        } catch (DataIntegrityViolationException e) {
 
             response.setCodigoRespuesta(propertiesInterno.idt2Codigo);
             response.setMensajeRespuesta(propertiesInterno.idt2Mensaje.replace(Constantes.TAG_MENSAJE, e.getRootCause().getMessage()));
+
         }
-
-
 
         return response;
     }
