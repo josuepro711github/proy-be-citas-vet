@@ -3,13 +3,21 @@ package com.utp.edu.pe.resource;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.utp.edu.pe.bean.BodyResponse;
+import com.utp.edu.pe.model.Cliente;
 import com.utp.edu.pe.model.Mascota;
+import com.utp.edu.pe.model.PageableMascota;
+import com.utp.edu.pe.repository.ClienteRepository;
+import com.utp.edu.pe.repository.MascotaRepository;
 import com.utp.edu.pe.service.MascotaService;
 import com.utp.edu.pe.util.Constantes;
 import com.utp.edu.pe.util.PropertiesInterno;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -67,5 +75,27 @@ public class MascotaResource {
 
     }
 
+
+    @PostMapping(value = "listar", consumes = "application/json", produces = "application/json")
+    public Page<Mascota> listarMascota(@RequestBody PageableMascota request) {
+        Sort.Direction asc = null;
+//        if (request.getTypeOrder()==null) {
+//            request.setTypeOrder("DESC");
+//        }
+        String tipoOrden = request.getTypeOrder().toUpperCase();
+        asc = (tipoOrden.equals("ASC")) ? Sort.Direction.ASC : Sort.Direction.DESC;
+
+        final Pageable pageable = PageRequest.of(request.getPage(), request.getSize(), Sort.by(asc, request.getOrderParameter()));
+        return mascotaService.listarMascota(pageable);
+    }
+
+
+    @Autowired
+    MascotaRepository repository;
+    @GetMapping(value = "/lista")
+    public ResponseEntity<List<Mascota>> listaMascota(){
+        List<Mascota> lista =   repository.findAll();
+        return new ResponseEntity<>(lista,HttpStatus.OK);
+    }
 
 }

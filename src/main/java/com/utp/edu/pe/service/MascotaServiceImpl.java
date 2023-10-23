@@ -13,9 +13,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.jdbc.support.SQLErrorCodeSQLExceptionTranslator;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -64,6 +67,12 @@ public class MascotaServiceImpl implements MascotaService{
         }
 
         return response;
+    }
+
+    @Override
+    public Page<Mascota> listarMascota(Pageable pageable) {
+        Page<Mascota> listaMascota = mascotaRepository.findAll(pageable);
+        return listaMascota;
     }
 
 
