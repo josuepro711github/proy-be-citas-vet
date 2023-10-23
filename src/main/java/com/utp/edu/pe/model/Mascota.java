@@ -20,8 +20,8 @@ public class Mascota {
     private String imagen;
 
     @ManyToOne
-    @JoinColumn(name = "id_tipo_mascota",referencedColumnName = "id_tipo_mascota")
-    private TipoMascota tipo_mascota;
+    @JoinColumn(name = "id_raza",referencedColumnName = "id_raza")
+    private Raza raza;
 
     @ManyToOne
     @JoinColumn(name = "id_cliente",referencedColumnName = "id_cliente")

@@ -78,11 +78,11 @@ public class ParametroValid {
                 validMascota = "idCliente";
                 throw new ConvertException(validMascota);
             }
-            if (null == request.getTipo_mascota().getRaza().getId_raza()) {
+            if (null == request.getRaza().getId_raza()) {
                 validMascota = "idRaza";
                 throw new ConvertException(validMascota);
             }
-            if (null == request.getTipo_mascota().getId_tipo_mascota()) {
+            if (null == request.getRaza().getTipo_mascota().getId_tipo_mascota()) {
                 validMascota = "idTipoMascota";
                 throw new ConvertException(validMascota);
             }
