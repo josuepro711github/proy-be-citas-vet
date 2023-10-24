@@ -10,8 +10,14 @@ import com.utp.edu.pe.repository.UsuarioRepository;
 import com.utp.edu.pe.util.Constantes;
 import com.utp.edu.pe.util.PropertiesInterno;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class DoctorServiceImpl implements DoctorService{
@@ -48,13 +54,25 @@ public class DoctorServiceImpl implements DoctorService{
 
         Usuario usuarioGuardado = usuarioRepository.save(request.getUsuario());
         request.setUsuario(usuarioGuardado);
-        doctorRepository.save(request);
 
-        response.setIdTransaccion(idTransaccion);
-        response.setCodigoRespuesta(propertiesInterno.idf0Codigo);
-        response.setMensajeRespuesta(propertiesInterno.idf0Mensaje);
+        try {
+
+            doctorRepository.save(request);
+            response.setCodigoRespuesta(propertiesInterno.idf0Codigo);
+            response.setMensajeRespuesta(propertiesInterno.idf0Mensaje);
+
+        } catch (DataIntegrityViolationException e){
+            response.setCodigoRespuesta(propertiesInterno.idt2Codigo);
+            response.setMensajeRespuesta(propertiesInterno.idt2Mensaje.replace(Constantes.TAG_MENSAJE, e.getRootCause().getMessage()));
+        }
 
         return response;
+    }
+
+    @Override
+    public Page<Doctor> listarDoctor(Pageable pageable) {
+        Page<Doctor> listaDoctor = doctorRepository.findAll(pageable);
+        return listaDoctor;
     }
 
 

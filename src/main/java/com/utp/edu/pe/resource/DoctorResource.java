@@ -4,21 +4,18 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.utp.edu.pe.bean.BodyResponse;
 import com.utp.edu.pe.bean.HeaderRequest;
 import com.utp.edu.pe.model.Doctor;
-import com.utp.edu.pe.model.Especialidad;
-import com.utp.edu.pe.repository.DoctorRepository;
+import com.utp.edu.pe.request.PageableDoctor;
 import com.utp.edu.pe.service.DoctorService;
 import com.utp.edu.pe.util.Constantes;
-import com.utp.edu.pe.util.ParametroValid;
 import com.utp.edu.pe.util.PropertiesInterno;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static com.utp.edu.pe.util.ParametroValid.*;
@@ -36,7 +33,7 @@ public class DoctorResource {
     @Autowired
     private DoctorService doctorService;
 
-    @PostMapping(value = Constantes.PATH_REGISTRAR_DOCTOR, consumes = "application/json", produces = "application/json")
+    @PostMapping(value = Constantes.PATH_REGISTRAR, consumes = "application/json", produces = "application/json")
     public ResponseEntity<BodyResponse> registrarDoctor(
             @RequestHeader(name = "idTransaccion", required = false) String idTransaccion,
 			@RequestHeader(name = "userId", required = false) String userId,
@@ -49,7 +46,6 @@ public class DoctorResource {
         BodyResponse response = null;
         String requestPrint = null;
         String responsePrint = null;
-        //long tiempoInicio = System.currentTimeMillis();
         HeaderRequest headerRequest = new HeaderRequest();
 
         setHeaders(headerRequest, idTransaccion, userId, msgid, accept, aplicacion, timestamp);
@@ -76,7 +72,7 @@ public class DoctorResource {
                 response.setCodigoRespuesta(propertiesInterno.idf1Codigo);
                 response.setMensajeRespuesta(propertiesInterno.idf1Mensaje.replace(Constantes.TAG_PARAMETRO,validParam));
 
-                return new ResponseEntity<BodyResponse>(response, HttpStatus.BAD_REQUEST);
+                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
             }
 
         } catch (Exception e){
@@ -86,7 +82,7 @@ public class DoctorResource {
             response.setCodigoRespuesta(propertiesInterno.idt3Codigo);
             response.setMensajeRespuesta(propertiesInterno.idt3Mensaje.replace(Constantes.TAG_MENSAJE,e.toString()));
 
-            return new ResponseEntity<BodyResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
         } finally {
 
             responsePrint = printPrettyJSONString(response);
@@ -94,19 +90,12 @@ public class DoctorResource {
             LOG.info(msjTx + Constantes.PARAMETROS_SALIDA + Constantes.SALTO_LINEA + responsePrint);
         }
 
-        return new ResponseEntity<BodyResponse>(response, HttpStatus.CREATED);
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
-
-
-
-
-    @Autowired
-    DoctorRepository repository;
-    @GetMapping(value = "/lista")
-    public ResponseEntity<List<Doctor>> listaDoctor(){
-        List<Doctor> lista =   repository.findAll();
-        return new ResponseEntity<>(lista,HttpStatus.OK);
+    @PostMapping(value = Constantes.PATH_LISTAR, consumes = "application/json", produces = "application/json")
+    public Page<Doctor> listarDoctores(@RequestBody PageableDoctor request) {
+        return null;
     }
 
 }
