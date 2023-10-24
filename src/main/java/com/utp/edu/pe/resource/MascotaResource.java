@@ -1,9 +1,13 @@
 package com.utp.edu.pe.resource;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.utp.edu.pe.bean.BodyResponse;
+import com.utp.edu.pe.model.Cliente;
 import com.utp.edu.pe.model.Mascota;
-import com.utp.edu.pe.request.PageableRequest;
+import com.utp.edu.pe.model.PageableMascota;
+import com.utp.edu.pe.repository.ClienteRepository;
+import com.utp.edu.pe.repository.MascotaRepository;
 import com.utp.edu.pe.service.MascotaService;
 import com.utp.edu.pe.util.Constantes;
 import com.utp.edu.pe.util.PropertiesInterno;
@@ -19,6 +23,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
+
 import static com.utp.edu.pe.util.ParametroValid.*;
 
 @RestController
@@ -33,7 +39,7 @@ public class MascotaResource {
     @Autowired
     private MascotaService mascotaService;
 
-    @PostMapping(value = Constantes.PATH_REGISTRAR_MASCOTA , consumes = "application/json", produces = "application/json")
+    @PostMapping(value = Constantes.PATH_REGISTRAR_MASCOTA)
     public ResponseEntity<BodyResponse> registrarMascota(@RequestParam("mascota")  String mascota,
                                                          @RequestParam("imagen") MultipartFile imagen)  {
 
@@ -69,16 +75,35 @@ public class MascotaResource {
 
     }
 
-    @PostMapping(value = Constantes.PATH_LISTAR_MASCOTAS, consumes = "application/json", produces = "application/json")
-    public Page<Mascota> listarMascota(@RequestBody PageableRequest request) {
 
+    @PostMapping(value = "listar", consumes = "application/json", produces = "application/json")
+    public Page<Mascota> listarMascota(@RequestBody PageableMascota request) {
+        Page<Mascota> mascotas = null;
+        Pageable pageable = null;
         Sort.Direction asc = null;
+
         String tipoOrden = request.getTypeOrder().toUpperCase();
         asc = (tipoOrden.equals("ASC")) ? Sort.Direction.ASC : Sort.Direction.DESC;
 
-        final Pageable pageable = PageRequest.of(request.getPage(), request.getSize(), Sort.by(asc, ""));
-        return mascotaService.listarMascota(pageable);
+        try{
+            pageable = PageRequest.of(request.getPage(), request.getSize(), Sort.by(asc, request.getOrderParameter()));
+            mascotas = mascotaService.listarMascota(pageable);
+        }catch (Exception e){
+            request.setOrderParameter("alias");
+            pageable = PageRequest.of(request.getPage(), request.getSize(), Sort.by(asc, request.getOrderParameter()));
+
+            mascotas = mascotaService.listarMascota(pageable);
+        }
+        return mascotas;
     }
 
+
+    @Autowired
+    MascotaRepository repository;
+    @GetMapping(value = "/lista")
+    public ResponseEntity<List<Mascota>> listaMascota(){
+        List<Mascota> lista =   repository.findAll();
+        return new ResponseEntity<>(lista,HttpStatus.OK);
+    }
 
 }
