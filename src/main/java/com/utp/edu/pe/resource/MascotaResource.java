@@ -78,15 +78,23 @@ public class MascotaResource {
 
     @PostMapping(value = "listar", consumes = "application/json", produces = "application/json")
     public Page<Mascota> listarMascota(@RequestBody PageableMascota request) {
+        Page<Mascota> mascotas = null;
+        Pageable pageable = null;
         Sort.Direction asc = null;
-//        if (request.getTypeOrder()==null) {
-//            request.setTypeOrder("DESC");
-//        }
+
         String tipoOrden = request.getTypeOrder().toUpperCase();
         asc = (tipoOrden.equals("ASC")) ? Sort.Direction.ASC : Sort.Direction.DESC;
 
-        final Pageable pageable = PageRequest.of(request.getPage(), request.getSize(), Sort.by(asc, request.getOrderParameter()));
-        return mascotaService.listarMascota(pageable);
+        try{
+            pageable = PageRequest.of(request.getPage(), request.getSize(), Sort.by(asc, request.getOrderParameter()));
+            mascotas = mascotaService.listarMascota(pageable);
+        }catch (Exception e){
+            request.setOrderParameter("alias");
+            pageable = PageRequest.of(request.getPage(), request.getSize(), Sort.by(asc, request.getOrderParameter()));
+
+            mascotas = mascotaService.listarMascota(pageable);
+        }
+        return mascotas;
     }
 
 
