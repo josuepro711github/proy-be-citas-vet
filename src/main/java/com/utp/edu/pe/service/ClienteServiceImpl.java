@@ -29,20 +29,21 @@ public class ClienteServiceImpl implements ClienteService{
     public BodyResponse registrarCliente(Cliente request) {
 
         BodyResponse response = new BodyResponse();
-        Usuario existeUsuario = usuarioRepository.findByEmail(request.getUsuario().getEmail());
-        if(null!=existeUsuario){
-            response.setCodigoRespuesta(propertiesInterno.idf2Codigo);
-            response.setMensajeRespuesta(propertiesInterno.idf2Mensaje.replace(Constantes.TAG_USUARIO, existeUsuario.getEmail()));
-            return response;
-        }
-
-        request.getUsuario().setContrasenia(new BCryptPasswordEncoder().encode(request.getUsuario().getContrasenia()));
-        request.getUsuario().getRol().setId_rol(Constantes.ROL_CLIENTE);
-
-        Usuario usuarioGuardado = usuarioRepository.save(request.getUsuario());
-        request.setUsuario(usuarioGuardado);
 
         try {
+            Usuario existeUsuario = usuarioRepository.findByEmail(request.getUsuario().getEmail());
+            if(null!=existeUsuario){
+                response.setCodigoRespuesta(propertiesInterno.idf2Codigo);
+                response.setMensajeRespuesta(propertiesInterno.idf2Mensaje.replace(Constantes.TAG_USUARIO, existeUsuario.getEmail()));
+                return response;
+            }
+
+            request.getUsuario().setContrasenia(new BCryptPasswordEncoder().encode(request.getUsuario().getContrasenia()));
+            request.getUsuario().getRol().setId_rol(Constantes.ROL_CLIENTE);
+
+            Usuario usuarioGuardado = usuarioRepository.save(request.getUsuario());
+            request.setUsuario(usuarioGuardado);
+
             clienteRepository.save(request);
             response.setCodigoRespuesta(propertiesInterno.idf0Codigo);
             response.setMensajeRespuesta(propertiesInterno.idf0Mensaje);

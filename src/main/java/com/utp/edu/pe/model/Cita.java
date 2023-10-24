@@ -1,6 +1,8 @@
 package com.utp.edu.pe.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
 import lombok.*;
 
 import java.sql.Date;
@@ -16,15 +18,23 @@ public class Cita {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_cita;
+
+    @NotNull
     private Date fecha;
+
+    @NotNull
     private String motivo;
+
+    @NotNull
     private String hora_cita;
+
+    @NotNull
     private String observaciones;
 
-    @ManyToOne
-    @JoinColumn(name = "id_estado_cita",referencedColumnName = "id_estado_cita")
-    private EstadoCita estadoCita;
+    @NotNull
+    private String estado;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "id_doctor",referencedColumnName = "id_doctor")
     private Doctor doctor;

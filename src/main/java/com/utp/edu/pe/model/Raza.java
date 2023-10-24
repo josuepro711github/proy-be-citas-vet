@@ -1,6 +1,8 @@
 package com.utp.edu.pe.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
 import lombok.*;
 
 
@@ -15,9 +17,12 @@ public class Raza {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id_raza;
+
+    @NotNull
     private String descripcion;
 
+    @NotNull
     @ManyToOne
-    @JoinColumn(name = "id_tipo_mascota",referencedColumnName = "id_tipo_mascota")
-    private TipoMascota tipo_mascota;
+    @JoinColumn(name = "id_especie",referencedColumnName = "id_especie")
+    private Especie id_especie;
 }

@@ -1,15 +1,10 @@
-package com.utp.edu.pe.model;
+package com.utp.edu.pe.request;
 
-import com.fasterxml.jackson.annotation.JsonSetter;
-
-public class PageableMascota {
+public class PageableRequest {
     private int page;
     private int size;
     private String orderParameter;
-
-
     private String typeOrder;
-
 
     public int getPage() {
         return page;
@@ -24,11 +19,7 @@ public class PageableMascota {
     }
 
     public void setSize(int size) {
-        if (size == 0) {
-            this.size = 1;
-        }else{
-            this.size = size;
-        }
+        this.size = (this.size == 0) ? 5 : this.size;
     }
 
     public String getOrderParameter() {
@@ -37,24 +28,13 @@ public class PageableMascota {
 
     public void setOrderParameter(String orderParameter) {
         this.orderParameter = orderParameter;
-//        if (orderParameter == null || orderParameter.isEmpty()) {
-//            this.orderParameter = "alias";
-//        }else{
-//
-//        }
     }
 
     public String getTypeOrder() {
         return typeOrder;
     }
 
-
     public void setTypeOrder(String typeOrder) {
-        if (typeOrder == null) {
-            this.typeOrder = "DESC";
-        }else{
-            this.typeOrder = typeOrder;
-        }
+        this.typeOrder = (typeOrder == null || typeOrder.isEmpty()) ? "DESC" : typeOrder;
     }
-
 }

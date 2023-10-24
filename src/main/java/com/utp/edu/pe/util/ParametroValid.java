@@ -2,6 +2,7 @@ package com.utp.edu.pe.util;
 
 import com.utp.edu.pe.model.Cliente;
 import com.utp.edu.pe.model.Mascota;
+import com.utp.edu.pe.request.PageableRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.utp.edu.pe.exception.ConvertException;
@@ -20,11 +21,6 @@ public class ParametroValid {
         String validCodeRegistrarDoctor = Constantes.CADENA_CERO;
 
         try {
-            if (null == request.getNombre() || Constantes.TEXTO_VACIO.equalsIgnoreCase(request.getNombre().trim())) {
-                validCodeRegistrarDoctor = "nombre";
-                System.out.println("nombre");
-                throw new ConvertException(validCodeRegistrarDoctor);
-            }
             //Validar Usuario
             if ((null == request.getUsuario().getEmail() || Constantes.TEXTO_VACIO.equalsIgnoreCase(request.getUsuario().getEmail().trim()))
                     || (!validarEmail(request.getUsuario().getEmail()))) {
@@ -45,11 +41,6 @@ public class ParametroValid {
         String validCodeRegistrarDoctor = Constantes.CADENA_CERO;
 
         try {
-            if (null == request.getNombre() || Constantes.TEXTO_VACIO.equalsIgnoreCase(request.getNombre().trim())) {
-                validCodeRegistrarDoctor = "nombre";
-                System.out.println("nombre");
-                throw new ConvertException(validCodeRegistrarDoctor);
-            }
             //Validar Usuario
             if ((null == request.getUsuario().getEmail() || Constantes.TEXTO_VACIO.equalsIgnoreCase(request.getUsuario().getEmail().trim()))
                     || (!validarEmail(request.getUsuario().getEmail()))) {
@@ -81,10 +72,6 @@ public class ParametroValid {
             }
             if (null == request.getRaza().getId_raza()) {
                 validMascota = "idRaza";
-                throw new ConvertException(validMascota);
-            }
-            if (null == request.getRaza().getTipo_mascota().getId_tipo_mascota()) {
-                validMascota = "idTipoMascota";
                 throw new ConvertException(validMascota);
             }
 

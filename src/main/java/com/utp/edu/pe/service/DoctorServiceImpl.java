@@ -34,28 +34,28 @@ public class DoctorServiceImpl implements DoctorService{
     @Override
     public BodyResponse registrarDoctor(String idTransaccion, Doctor request) {
         BodyResponse response = new BodyResponse();
-        Usuario existeUsuario = usuarioRepository.findByEmail(request.getUsuario().getEmail());
-        if(null!=existeUsuario){
-            response.setIdTransaccion(idTransaccion);
-            response.setCodigoRespuesta(propertiesInterno.idf2Codigo);
-            response.setMensajeRespuesta(propertiesInterno.idf2Mensaje.replace(Constantes.TAG_USUARIO, existeUsuario.getEmail()));
-            return response;
-        }
-        request.getUsuario().setContrasenia(new BCryptPasswordEncoder().encode(request.getUsuario().getContrasenia()));
-        request.getUsuario().getRol().setId_rol(Constantes.ROL_DOCTOR);
-
-        Especialidad existeEspecialidad = especialidadRepository.findByDescripcion(request.getEspecialidad().getDescripcion());
-        if(null==existeEspecialidad){
-            Especialidad especialidadGuardada = especialidadRepository.save(request.getEspecialidad());
-            request.setEspecialidad(especialidadGuardada);
-        }else{
-            request.setEspecialidad(existeEspecialidad);
-        }
-
-        Usuario usuarioGuardado = usuarioRepository.save(request.getUsuario());
-        request.setUsuario(usuarioGuardado);
 
         try {
+            Usuario existeUsuario = usuarioRepository.findByEmail(request.getUsuario().getEmail());
+            if(null!=existeUsuario){
+                response.setIdTransaccion(idTransaccion);
+                response.setCodigoRespuesta(propertiesInterno.idf2Codigo);
+                response.setMensajeRespuesta(propertiesInterno.idf2Mensaje.replace(Constantes.TAG_USUARIO, existeUsuario.getEmail()));
+                return response;
+            }
+            request.getUsuario().setContrasenia(new BCryptPasswordEncoder().encode(request.getUsuario().getContrasenia()));
+            request.getUsuario().getRol().setId_rol(Constantes.ROL_DOCTOR);
+
+            Especialidad existeEspecialidad = especialidadRepository.findByDescripcion(request.getEspecialidad().getDescripcion());
+            if(null==existeEspecialidad){
+                Especialidad especialidadGuardada = especialidadRepository.save(request.getEspecialidad());
+                request.setEspecialidad(especialidadGuardada);
+            }else{
+                request.setEspecialidad(existeEspecialidad);
+            }
+
+            Usuario usuarioGuardado = usuarioRepository.save(request.getUsuario());
+            request.setUsuario(usuarioGuardado);
 
             doctorRepository.save(request);
             response.setCodigoRespuesta(propertiesInterno.idf0Codigo);

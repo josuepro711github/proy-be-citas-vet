@@ -1,26 +1,28 @@
 package com.utp.edu.pe.model;
 
 import javax.persistence.*;
-import lombok.*;
+import javax.validation.constraints.NotNull;
 
-import java.sql.Date;
+import lombok.*;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Table(name="detalle_cita")
+@Table(name="cita_mascota")
 @Entity
-public class DetalleCita {
+public class CitaMascota {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id_detalle_cita;
+    private Integer id_cita_mascota;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "id_mascota",referencedColumnName = "id_mascota")
     private Mascota mascota;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "id_cita",referencedColumnName = "id_cita")
     private Cita cita;

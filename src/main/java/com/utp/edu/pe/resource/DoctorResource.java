@@ -4,7 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.utp.edu.pe.bean.BodyResponse;
 import com.utp.edu.pe.bean.HeaderRequest;
 import com.utp.edu.pe.model.Doctor;
-import com.utp.edu.pe.request.PageableDoctor;
 import com.utp.edu.pe.service.DoctorService;
 import com.utp.edu.pe.util.Constantes;
 import com.utp.edu.pe.util.PropertiesInterno;
@@ -15,8 +14,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 import static com.utp.edu.pe.util.ParametroValid.*;
 import static com.utp.edu.pe.util.PetLifeUtil.*;
@@ -91,11 +88,6 @@ public class DoctorResource {
         }
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
-    }
-
-    @PostMapping(value = Constantes.PATH_LISTAR, consumes = "application/json", produces = "application/json")
-    public Page<Doctor> listarDoctores(@RequestBody PageableDoctor request) {
-        return null;
     }
 
 }
