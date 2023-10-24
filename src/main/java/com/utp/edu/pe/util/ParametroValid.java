@@ -68,7 +68,8 @@ public class ParametroValid {
 
     public static String validarRegistrarMascota(Mascota request) throws ConvertException {
         String validMascota = Constantes.CADENA_CERO;
-        String validFecha = validarFecha(request);
+
+        String validFecha = validarFecha(request.getFecha_nacimiento());
         try {
             if (!validFecha.equals(Constantes.TEXTO_VACIO)) {
                 validMascota = "fechaNacimiento";
@@ -95,10 +96,10 @@ public class ParametroValid {
         return validMascota;
     }
 
-    private static String validarFecha(Mascota request) {
+    private static String validarFecha(String request) {
 
         String valid = "";
-        if (request.getFecha_nacimiento() == null) {
+        if (request == null) {
             return Constantes.ES_NULO;
         }
 
@@ -106,13 +107,13 @@ public class ParametroValid {
         String regex = "\\d{4}-\\d{2}-\\d{2}";
 
         // Verifica si el string coincide con el formato de fecha
-        if (Pattern.matches(regex, request.getFecha_nacimiento())) {
+        if (Pattern.matches(regex, request)) {
 
             // El formato es correcto, ahora verifica si la fecha es válida
             SimpleDateFormat dateFormat = new SimpleDateFormat(Constantes.FORMATO_FECHA);
             dateFormat.setLenient(false);
             try {
-                dateFormat.parse(request.getFecha_nacimiento());
+                dateFormat.parse(request);
 
             } catch (ParseException e) {
                 valid = e.getMessage();
