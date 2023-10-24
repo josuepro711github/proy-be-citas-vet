@@ -1,13 +1,10 @@
 package com.utp.edu.pe.resource;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.utp.edu.pe.bean.BodyResponse;
-import com.utp.edu.pe.model.Cliente;
 import com.utp.edu.pe.model.Mascota;
-import com.utp.edu.pe.model.PageableMascota;
-import com.utp.edu.pe.repository.ClienteRepository;
 import com.utp.edu.pe.repository.MascotaRepository;
+import com.utp.edu.pe.request.PageableRequest;
 import com.utp.edu.pe.service.MascotaService;
 import com.utp.edu.pe.util.Constantes;
 import com.utp.edu.pe.util.PropertiesInterno;
@@ -71,13 +68,11 @@ public class MascotaResource {
         }
 
         return ResponseEntity.ok(response);
-
-
     }
 
 
-    @PostMapping(value = "listar", consumes = "application/json", produces = "application/json")
-    public Page<Mascota> listarMascota(@RequestBody PageableMascota request) {
+    @PostMapping(value = Constantes.PATH_LISTAR_MASCOTAS, consumes = "application/json", produces = "application/json")
+    public Page<Mascota> listarMascotas(@RequestBody PageableRequest request) {
         Page<Mascota> mascotas = null;
         Pageable pageable = null;
         Sort.Direction asc = null;
@@ -95,15 +90,6 @@ public class MascotaResource {
             mascotas = mascotaService.listarMascota(pageable);
         }
         return mascotas;
-    }
-
-
-    @Autowired
-    MascotaRepository repository;
-    @GetMapping(value = "/lista")
-    public ResponseEntity<List<Mascota>> listaMascota(){
-        List<Mascota> lista =   repository.findAll();
-        return new ResponseEntity<>(lista,HttpStatus.OK);
     }
 
 }
