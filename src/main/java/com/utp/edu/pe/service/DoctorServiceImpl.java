@@ -10,8 +10,14 @@ import com.utp.edu.pe.repository.UsuarioRepository;
 import com.utp.edu.pe.util.Constantes;
 import com.utp.edu.pe.util.PropertiesInterno;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class DoctorServiceImpl implements DoctorService{
@@ -28,33 +34,45 @@ public class DoctorServiceImpl implements DoctorService{
     @Override
     public BodyResponse registrarDoctor(String idTransaccion, Doctor request) {
         BodyResponse response = new BodyResponse();
-        Usuario existeUsuario = usuarioRepository.findByEmail(request.getUsuario().getEmail());
-        if(null!=existeUsuario){
-            response.setIdTransaccion(idTransaccion);
-            response.setCodigoRespuesta(propertiesInterno.idf2Codigo);
-            response.setMensajeRespuesta(propertiesInterno.idf2Mensaje.replace(Constantes.TAG_USUARIO, existeUsuario.getEmail()));
-            return response;
+
+        try {
+            Usuario existeUsuario = usuarioRepository.findByEmail(request.getUsuario().getEmail());
+            if(null!=existeUsuario){
+                response.setIdTransaccion(idTransaccion);
+                response.setCodigoRespuesta(propertiesInterno.idf2Codigo);
+                response.setMensajeRespuesta(propertiesInterno.idf2Mensaje.replace(Constantes.TAG_USUARIO, existeUsuario.getEmail()));
+                return response;
+            }
+            request.getUsuario().setContrasenia(new BCryptPasswordEncoder().encode(request.getUsuario().getContrasenia()));
+            request.getUsuario().getRol().setId_rol(Constantes.ROL_DOCTOR);
+
+            Especialidad existeEspecialidad = especialidadRepository.findByDescripcion(request.getEspecialidad().getDescripcion());
+            if(null==existeEspecialidad){
+                Especialidad especialidadGuardada = especialidadRepository.save(request.getEspecialidad());
+                request.setEspecialidad(especialidadGuardada);
+            }else{
+                request.setEspecialidad(existeEspecialidad);
+            }
+
+            Usuario usuarioGuardado = usuarioRepository.save(request.getUsuario());
+            request.setUsuario(usuarioGuardado);
+
+            doctorRepository.save(request);
+            response.setCodigoRespuesta(propertiesInterno.idf0Codigo);
+            response.setMensajeRespuesta(propertiesInterno.idf0Mensaje);
+
+        } catch (DataIntegrityViolationException e){
+            response.setCodigoRespuesta(propertiesInterno.idt2Codigo);
+            response.setMensajeRespuesta(propertiesInterno.idt2Mensaje.replace(Constantes.TAG_MENSAJE, e.getRootCause().getMessage()));
         }
-        request.getUsuario().setContrasenia(new BCryptPasswordEncoder().encode(request.getUsuario().getContrasenia()));
-        request.getUsuario().getRol().setId_rol(Constantes.ROL_DOCTOR);
-
-        Especialidad existeEspecialidad = especialidadRepository.findByDescripcion(request.getEspecialidad().getDescripcion());
-        if(null==existeEspecialidad){
-            Especialidad especialidadGuardada = especialidadRepository.save(request.getEspecialidad());
-            request.setEspecialidad(especialidadGuardada);
-        }else{
-            request.setEspecialidad(existeEspecialidad);
-        }
-
-        Usuario usuarioGuardado = usuarioRepository.save(request.getUsuario());
-        request.setUsuario(usuarioGuardado);
-        doctorRepository.save(request);
-
-        response.setIdTransaccion(idTransaccion);
-        response.setCodigoRespuesta(propertiesInterno.idf0Codigo);
-        response.setMensajeRespuesta(propertiesInterno.idf0Mensaje);
 
         return response;
+    }
+
+    @Override
+    public Page<Doctor> listarDoctor(Pageable pageable) {
+        Page<Doctor> listaDoctor = doctorRepository.findAll(pageable);
+        return listaDoctor;
     }
 
 

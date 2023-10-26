@@ -1,6 +1,8 @@
 package com.utp.edu.pe.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
 import lombok.*;
 
 @Getter
@@ -8,11 +10,13 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
-@Table(name="tipo_mascota")
+@Table(name="especie")
 @Entity
-public class TipoMascota {
+public class Especie {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id_tipo_mascota;
+    private Integer id_especie;
+
+    @NotNull
     private String descripcion;
 }

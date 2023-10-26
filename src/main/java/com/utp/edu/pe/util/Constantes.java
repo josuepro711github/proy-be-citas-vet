@@ -37,7 +37,8 @@ public class Constantes {
     public static final String BASEPATH = "/api/vet/petlife/v1.0.0";
 
     public static final String PATH_DOCTOR = "/doctor";
-    public static final String PATH_REGISTRAR_DOCTOR = "/registrarDoctor";
+    public static final String PATH_REGISTRAR = "/registrar";
+    public static final String PATH_LISTAR = "/listar";
 
     public static final String PATH_CLIENTE = "/cliente";
     public static final String PATH_MASCOTA = "/mascota";
@@ -45,6 +46,7 @@ public class Constantes {
     public static final String PATH_REGISTRAR_CLIENTE = "/registrarCliente";
 
     public static final String PATH_REGISTRAR_MASCOTA = "/registrarMascota";
+    public static final String PATH_LISTAR_MASCOTAS = "/listarMascotas";
 
     //Roles
     public static final int ROL_DOCTOR = 2;

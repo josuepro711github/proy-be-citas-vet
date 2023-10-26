@@ -1,6 +1,8 @@
 package com.utp.edu.pe.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
 import lombok.*;
 
 @Getter
@@ -16,10 +18,12 @@ public class Doctor {
     private Integer id_doctor;
 
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "id_usuario",referencedColumnName = "id_usuario")
     private Usuario usuario;
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "id_especialidad",referencedColumnName = "id_especialidad")
     private Especialidad especialidad;

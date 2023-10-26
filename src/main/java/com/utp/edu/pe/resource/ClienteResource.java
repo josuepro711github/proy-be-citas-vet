@@ -73,9 +73,6 @@ public class ClienteResource {
     }
 
 
-
-
-
     @Autowired
     ClienteRepository repository;
     @GetMapping(value = "/lista")

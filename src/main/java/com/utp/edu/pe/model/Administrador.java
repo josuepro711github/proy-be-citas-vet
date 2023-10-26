@@ -1,6 +1,8 @@
 package com.utp.edu.pe.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+
 import lombok.*;
 
 @Getter
@@ -16,6 +18,7 @@ public class Administrador {
     private Integer id_administrador;
 
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "id_usuario",referencedColumnName = "id_usuario")
     private Usuario usuario;

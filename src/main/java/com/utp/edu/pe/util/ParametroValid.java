@@ -2,6 +2,7 @@ package com.utp.edu.pe.util;
 
 import com.utp.edu.pe.model.Cliente;
 import com.utp.edu.pe.model.Mascota;
+import com.utp.edu.pe.request.PageableRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.utp.edu.pe.exception.ConvertException;
@@ -20,11 +21,7 @@ public class ParametroValid {
         String validCodeRegistrarDoctor = Constantes.CADENA_CERO;
 
         try {
-            if (null == request.getUsuario().getNombre() || Constantes.TEXTO_VACIO.equalsIgnoreCase(request.getUsuario().getNombre().trim())) {
-                validCodeRegistrarDoctor = "nombre";
-                System.out.println("nombre");
-                throw new ConvertException(validCodeRegistrarDoctor);
-            }
+
             //Validar Usuario
             if ((null == request.getUsuario().getEmail() || Constantes.TEXTO_VACIO.equalsIgnoreCase(request.getUsuario().getEmail().trim()))
                     || (!validarEmail(request.getUsuario().getEmail()))) {
@@ -45,11 +42,7 @@ public class ParametroValid {
         String validCodeRegistrarDoctor = Constantes.CADENA_CERO;
 
         try {
-            if (null == request.getUsuario().getNombre() || Constantes.TEXTO_VACIO.equalsIgnoreCase(request.getUsuario().getNombre().trim())) {
-                validCodeRegistrarDoctor = "nombre";
-                System.out.println("nombre");
-                throw new ConvertException(validCodeRegistrarDoctor);
-            }
+
             //Validar Usuario
             if ((null == request.getUsuario().getEmail() || Constantes.TEXTO_VACIO.equalsIgnoreCase(request.getUsuario().getEmail().trim()))
                     || (!validarEmail(request.getUsuario().getEmail()))) {
@@ -68,7 +61,8 @@ public class ParametroValid {
 
     public static String validarRegistrarMascota(Mascota request) throws ConvertException {
         String validMascota = Constantes.CADENA_CERO;
-        String validFecha = validarFecha(request);
+
+        String validFecha = validarFecha(request.getFecha_nacimiento());
         try {
             if (!validFecha.equals(Constantes.TEXTO_VACIO)) {
                 validMascota = "fechaNacimiento";
@@ -82,10 +76,6 @@ public class ParametroValid {
                 validMascota = "idRaza";
                 throw new ConvertException(validMascota);
             }
-            if (null == request.getRaza().getTipo_mascota().getId_tipo_mascota()) {
-                validMascota = "idTipoMascota";
-                throw new ConvertException(validMascota);
-            }
 
         } catch (ConvertException c) {
             LOG.error(Constantes.ERROR_FLAG, c);
@@ -95,10 +85,10 @@ public class ParametroValid {
         return validMascota;
     }
 
-    private static String validarFecha(Mascota request) {
+    private static String validarFecha(String request) {
 
         String valid = "";
-        if (request.getFecha_nacimiento() == null) {
+        if (request == null) {
             return Constantes.ES_NULO;
         }
 
@@ -106,13 +96,13 @@ public class ParametroValid {
         String regex = "\\d{4}-\\d{2}-\\d{2}";
 
         // Verifica si el string coincide con el formato de fecha
-        if (Pattern.matches(regex, request.getFecha_nacimiento())) {
+        if (Pattern.matches(regex, request)) {
 
             // El formato es correcto, ahora verifica si la fecha es válida
             SimpleDateFormat dateFormat = new SimpleDateFormat(Constantes.FORMATO_FECHA);
             dateFormat.setLenient(false);
             try {
-                dateFormat.parse(request.getFecha_nacimiento());
+                dateFormat.parse(request);
 
             } catch (ParseException e) {
                 valid = e.getMessage();
