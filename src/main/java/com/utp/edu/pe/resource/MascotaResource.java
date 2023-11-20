@@ -1,8 +1,10 @@
 package com.utp.edu.pe.resource;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.utp.edu.pe.bean.BodyResponse;
 import com.utp.edu.pe.model.Mascota;
+import com.utp.edu.pe.model.Raza;
 import com.utp.edu.pe.repository.MascotaRepository;
 import com.utp.edu.pe.request.PageableRequest;
 import com.utp.edu.pe.service.MascotaService;
@@ -38,34 +40,39 @@ public class MascotaResource {
 
     @PostMapping(value = Constantes.PATH_REGISTRAR_MASCOTA)
     public ResponseEntity<BodyResponse> registrarMascota(@RequestParam("mascota")  String mascota,
-                                                         @RequestParam("imagen") MultipartFile imagen)  {
+                                                         @RequestParam("imagen") MultipartFile imagen) throws JsonProcessingException {
+
 
         BodyResponse response = null;
-
-        try {
-            ObjectMapper objectMapper = new ObjectMapper();
-            Mascota mascotaObj = objectMapper.readValue(mascota, Mascota.class);
-
-            String validParam = validarRegistrarMascota(mascotaObj);
-
-            if(Constantes.CADENA_CERO.equalsIgnoreCase(validParam)){
-                response = mascotaService.registrarMascota( mascotaObj,imagen);
-            }else {
-                response = new BodyResponse();
-                response.setCodigoRespuesta(propertiesInterno.idf1Codigo);
-                response.setMensajeRespuesta(propertiesInterno.idf1Mensaje.replace(Constantes.TAG_PARAMETRO,validParam));
-
-                return new ResponseEntity<BodyResponse>(response, HttpStatus.BAD_REQUEST);
-            }
-
-        } catch (Exception e){
-            response = new BodyResponse();
-
-            response.setCodigoRespuesta(propertiesInterno.idt3Codigo);
-            response.setMensajeRespuesta(propertiesInterno.idt3Mensaje.replace(Constantes.TAG_MENSAJE,e.getMessage()));
-
-            return new ResponseEntity<BodyResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        ObjectMapper objectMapper = new ObjectMapper();
+        Mascota mascotaObj = objectMapper.readValue(mascota, Mascota.class);
+        response = mascotaService.registrarMascota( mascotaObj,imagen);
+//        try {
+//            ObjectMapper objectMapper = new ObjectMapper();
+//            Mascota mascotaObj = objectMapper.readValue(mascota, Mascota.class);
+//
+//            String validParam = validarRegistrarMascota(mascotaObj);
+//
+//            if(Constantes.CADENA_CERO.equalsIgnoreCase(validParam)){
+//
+//
+//            }else {
+//                response = new BodyResponse();
+//                response.setCodigoRespuesta(propertiesInterno.idf1Codigo);
+//                response.setMensajeRespuesta(propertiesInterno.idf1Mensaje.replace(Constantes.TAG_PARAMETRO,validParam));
+//
+//                return new ResponseEntity<BodyResponse>(response, HttpStatus.BAD_REQUEST);
+//            }
+//
+//        } catch (Exception e){
+//            System.out.println(e+"\n" +e.getMessage());
+//            response = new BodyResponse();
+//
+//            response.setCodigoRespuesta(propertiesInterno.idt3Codigo);
+//            response.setMensajeRespuesta(propertiesInterno.idt3Mensaje.replace(Constantes.TAG_MENSAJE,e.getMessage()));
+//
+//            return new ResponseEntity<BodyResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+//        }
 
         return ResponseEntity.ok(response);
     }
@@ -84,8 +91,11 @@ public class MascotaResource {
             pageable = PageRequest.of(request.getPage(), request.getSize(), Sort.by(asc, request.getOrderParameter()));
             mascotas = mascotaService.listarMascota(pageable);
         }catch (Exception e){
+
             request.setOrderParameter("alias");
-            pageable = PageRequest.of(request.getPage(), request.getSize(), Sort.by(asc, request.getOrderParameter()));
+
+            pageable = e.getMessage().contains("No property 'id'")? PageRequest.of(request.getPage(), request.getSize() ):
+                            PageRequest.of(request.getPage(), request.getSize(), Sort.by(asc, request.getOrderParameter()));
 
             mascotas = mascotaService.listarMascota(pageable);
         }

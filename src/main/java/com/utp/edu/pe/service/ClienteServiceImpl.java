@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class ClienteServiceImpl implements ClienteService{
@@ -25,8 +26,10 @@ public class ClienteServiceImpl implements ClienteService{
     @Autowired
     private UsuarioRepository usuarioRepository;
 
+    @Autowired
+    private ImagenService imagenService;
     @Override
-    public BodyResponse registrarCliente(Cliente request) {
+    public BodyResponse registrarCliente(Cliente request, MultipartFile imagen) {
 
         BodyResponse response = new BodyResponse();
 
@@ -40,6 +43,9 @@ public class ClienteServiceImpl implements ClienteService{
 
             request.getUsuario().setContrasenia(new BCryptPasswordEncoder().encode(request.getUsuario().getContrasenia()));
             request.getUsuario().getRol().setId_rol(Constantes.ROL_CLIENTE);
+
+            String nombreImagen = imagenService.cargarImagenCliente(imagen);
+            request.getUsuario().setImagen(nombreImagen);
 
             Usuario usuarioGuardado = usuarioRepository.save(request.getUsuario());
             request.setUsuario(usuarioGuardado);

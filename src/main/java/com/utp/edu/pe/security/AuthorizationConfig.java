@@ -74,9 +74,15 @@ public class AuthorizationConfig extends AuthorizationServerConfigurerAdapter {
 
                 Map<String, Object> infoAdicional = new HashMap<>();
                 infoAdicional.put("id", usuario.getId_usuario());
+                infoAdicional.put("nombre", usuario.getNombre());
+                infoAdicional.put("apellido paterno", usuario.getApellido_paterno());
+                infoAdicional.put("apellido materno", usuario.getApellido_materno());
+                infoAdicional.put("imagen", usuario.getImagen());
                 infoAdicional.put("email", email);
+                infoAdicional.put("imagen", usuario.getImagen());
                 infoAdicional.put("fecha y hora", fechaHoraActualString);
-                infoAdicional.put("rol", usuario.getRol().getTipo_rol());
+                infoAdicional.put("rol", usuario.getRol().getId_rol());
+                infoAdicional.put("descripcion rol", usuario.getRol().getTipo_rol());
 
 
                 DefaultOAuth2AccessToken token = new DefaultOAuth2AccessToken(accessToken);

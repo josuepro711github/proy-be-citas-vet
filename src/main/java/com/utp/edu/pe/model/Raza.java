@@ -25,4 +25,28 @@ public class Raza {
     @ManyToOne
     @JoinColumn(name = "id_especie",referencedColumnName = "id_especie")
     private Especie id_especie;
+
+    public Integer getId_raza() {
+        return id_raza;
+    }
+
+    public void setId_raza(Integer id_raza) {
+        this.id_raza = id_raza;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public Especie getId_especie() {
+        return id_especie;
+    }
+
+    public void setId_especie(Especie id_especie) {
+        this.id_especie = id_especie;
+    }
 }
