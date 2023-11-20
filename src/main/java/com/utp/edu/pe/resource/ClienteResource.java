@@ -78,6 +78,19 @@ public class ClienteResource {
 
     }
 
+    @PostMapping(value = "/pruebaCliente")
+    public ResponseEntity<BodyResponse> pruebaCliente(
+            @RequestParam("cliente")  String cliente)  throws JsonProcessingException {
+
+        BodyResponse response = null;
+
+        System.out.println(cliente);
+
+        return ResponseEntity.ok(response);
+
+
+    }
+
 
     @Autowired
     ClienteRepository repository;
