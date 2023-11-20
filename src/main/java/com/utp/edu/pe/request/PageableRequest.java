@@ -19,7 +19,7 @@ public class PageableRequest {
     }
 
     public void setSize(int size) {
-        this.size = (this.size == 0) ? 5 : this.size;
+        this.size = (size == 0) ? 5 : size;
     }
 
     public String getOrderParameter() {

@@ -74,6 +74,7 @@ public class AuthorizationConfig extends AuthorizationServerConfigurerAdapter {
 
                 Map<String, Object> infoAdicional = new HashMap<>();
                 infoAdicional.put("id", usuario.getId_usuario());
+                infoAdicional.put("nombre", usuario.getNombre());
                 infoAdicional.put("email", email);
                 infoAdicional.put("fecha y hora", fechaHoraActualString);
                 infoAdicional.put("rol", usuario.getRol().getTipo_rol());

@@ -33,7 +33,6 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter  implemen
                         .status(oAuth2Exception.getHttpErrorCode())
                         .body(new CustomOauthException(oAuth2Exception.getMessage(),this.event));
 
-
             } else {
                 throw exception;
             }

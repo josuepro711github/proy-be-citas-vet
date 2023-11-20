@@ -26,4 +26,29 @@ public class Doctor {
     @ManyToOne
     @JoinColumn(name = "id_especialidad",referencedColumnName = "id_especialidad")
     private Especialidad especialidad;
+
+
+    public Integer getId_doctor() {
+        return id_doctor;
+    }
+
+    public void setId_doctor(Integer id_doctor) {
+        this.id_doctor = id_doctor;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
+    public Especialidad getEspecialidad() {
+        return especialidad;
+    }
+
+    public void setEspecialidad(Especialidad especialidad) {
+        this.especialidad = especialidad;
+    }
 }

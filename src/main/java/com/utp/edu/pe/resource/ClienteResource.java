@@ -1,9 +1,11 @@
 package com.utp.edu.pe.resource;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.utp.edu.pe.bean.BodyResponse;
 import com.utp.edu.pe.bean.HeaderRequest;
 import com.utp.edu.pe.model.Cliente;
+import com.utp.edu.pe.model.Mascota;
 import com.utp.edu.pe.repository.ClienteRepository;
 import com.utp.edu.pe.service.ClienteService;
 import com.utp.edu.pe.util.Constantes;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -34,19 +37,22 @@ public class ClienteResource {
     @Autowired
     private ClienteService clienterService;
 
-    @PostMapping(value = Constantes.PATH_REGISTRAR_CLIENTE, consumes = "application/json", produces = "application/json")
+    @PostMapping(value = Constantes.PATH_REGISTRAR_CLIENTE)
     public ResponseEntity<BodyResponse> registrarCliente(
-            @RequestBody Cliente request)  {
+            @RequestParam("cliente")  String cliente,
+            @RequestParam("imagen") MultipartFile imagen)  throws JsonProcessingException {
 
         BodyResponse response = null;
 
         try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            Cliente request = objectMapper.readValue(cliente, Cliente.class);
 
             String validParam = validarRegistrarCliente(request);
 
             if(Constantes.CADENA_CERO.equalsIgnoreCase(validParam)){
 
-                response = clienterService.registrarCliente( request);
+                response = clienterService.registrarCliente( request,imagen);
 
             }else {
                 response = new BodyResponse();

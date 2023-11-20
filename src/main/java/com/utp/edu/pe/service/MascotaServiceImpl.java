@@ -3,6 +3,7 @@ package com.utp.edu.pe.service;
 import com.utp.edu.pe.bean.BodyResponse;
 import com.utp.edu.pe.model.Mascota;
 
+import com.utp.edu.pe.model.Raza;
 import com.utp.edu.pe.repository.MascotaRepository;
 
 import com.utp.edu.pe.util.Constantes;
@@ -54,17 +55,43 @@ public class MascotaServiceImpl implements MascotaService{
         String nombreImagen = imagenService.cargarImagen(imagen,fechaFormateada);
         request.setImagen(nombreImagen);
 
-        try {
+
+        int j = 0;
+        String[] nombresH = {"Josue","Maximo","Brad","Moises","Juan","Jesus","Miguel","Angelo"};
+        String[] nombresF = {"Ingrid","Genesis","Valeria","Diana","Angie","Maria","Katy","Leydi"};
+        for(int i = 0; i<40; i++){
+            request.setId_mascota(0);
+            System.out.println(nombresF[j]);
+            if(j == 7){
+                j=0;
+            }
+            if(i<=23){
+                request.setAlias(nombresH[j]);
+                request.setGenero("Masculino");
+
+            }else {
+                request.setAlias(nombresF[j]);
+                request.setGenero("Femenino");
+                Raza r = new Raza();
+                r.setId_raza(2);
+                request.setRaza(r);
+            }
+
             mascotaRepository.save(request);
-
-            response.setCodigoRespuesta(propertiesInterno.idf0Codigo);
-            response.setMensajeRespuesta(propertiesInterno.idf0Mensaje);
-        } catch (DataIntegrityViolationException e) {
-
-            response.setCodigoRespuesta(propertiesInterno.idt2Codigo);
-            response.setMensajeRespuesta(propertiesInterno.idt2Mensaje.replace(Constantes.TAG_MENSAJE, e.getRootCause().getMessage()));
-
+            j++;
         }
+
+//        try {
+//          //  mascotaRepository.save(request);
+//
+//            response.setCodigoRespuesta(propertiesInterno.idf0Codigo);
+//            response.setMensajeRespuesta(propertiesInterno.idf0Mensaje);
+//        } catch (DataIntegrityViolationException e) {
+//
+//            response.setCodigoRespuesta(propertiesInterno.idt2Codigo);
+//            response.setMensajeRespuesta(propertiesInterno.idt2Mensaje.replace(Constantes.TAG_MENSAJE, e.getRootCause().getMessage()));
+//
+//        }
 
         return response;
     }
