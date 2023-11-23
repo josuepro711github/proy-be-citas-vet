@@ -28,7 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Service
-public class MascotaServiceImpl implements MascotaService {
+public class MascotaServiceImpl implements MascotaService{
 
     @Autowired
     private PropertiesInterno propertiesInterno;
@@ -40,49 +40,50 @@ public class MascotaServiceImpl implements MascotaService {
 
     @Override
     public BodyResponse registrarMascota(Mascota request, MultipartFile imagen) {
-        System.out.println("INICIO Método: registrarMascota");
         BodyResponse response = new BodyResponse();
 
 
-        Timestamp fechaActual = new Timestamp(System.currentTimeMillis());
-
-        // Convertir Timestamp a Date
-        Date fecha = new Date(fechaActual.getTime());
-
-        // Formatear la fecha como una cadena
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String fechaFormateada = dateFormat.format(fecha);
-
-        String nombreImagen = imagenService.cargarImagen(imagen, fechaFormateada);
-        request.setImagen(nombreImagen);
-
-
-/*        int j = 0;
-        String[] nombresH = {"Josue","Maximo","Brad","Moises","Juan","Jesus","Miguel","Angelo"};
-        String[] nombresF = {"Ingrid","Genesis","Valeria","Diana","Angie","Maria","Katy","Leydi"};
-        for(int i = 0; i<40; i++){
-            request.setId_mascota(0);
-            System.out.println(nombresF[j]);
-            if(j == 7){
-                j=0;
-            }
-            if(i<=23){
-                request.setAlias(nombresH[j]);
-                request.setGenero("Masculino");
-
-            }else {
-                request.setAlias(nombresF[j]);
-                request.setGenero("Femenino");
-                Raza r = new Raza();
-                r.setId_raza(2);
-                request.setRaza(r);
-            }
-
-            mascotaRepository.save(request);
-            j++;
-        }*/
+//        Timestamp fechaActual = new Timestamp(System.currentTimeMillis());
+//
+//        // Convertir Timestamp a Date
+//        Date fecha = new Date(fechaActual.getTime());
+//
+//        // Formatear la fecha como una cadena
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        String fechaFormateada = dateFormat.format(fecha);
+//
+//        String nombreImagen = imagenService.cargarImagen(imagen,"mascotas");
+//        request.setImagen(nombreImagen);
+//
+//
+//        int j = 0;
+//        String[] nombresH = {"Josue","Maximo","Brad","Moises","Juan","Jesus","Miguel","Angelo"};
+//        String[] nombresF = {"Ingrid","Genesis","Valeria","Diana","Angie","Maria","Katy","Leydi"};
+//        for(int i = 0; i<40; i++){
+//            request.setId_mascota(0);
+//            System.out.println(nombresF[j]);
+//            if(j == 7){
+//                j=0;
+//            }
+//            if(i<=23){
+//                request.setAlias(nombresH[j]);
+//                request.setGenero("Masculino");
+//
+//            }else {
+//                request.setAlias(nombresF[j]);
+//                request.setGenero("Femenino");
+//                Raza r = new Raza();
+//                r.setId_raza(2);
+//                request.setRaza(r);
+//            }
+//
+//            mascotaRepository.save(request);
+//            j++;
+//        }
 
         try {
+            String nombreImagen = imagenService.cargarImagen(imagen,"mascotas");
+            request.setImagen(nombreImagen);
             mascotaRepository.save(request);
 
             response.setCodigoRespuesta(propertiesInterno.idf0Codigo);

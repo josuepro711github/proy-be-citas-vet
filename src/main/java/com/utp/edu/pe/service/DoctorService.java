@@ -5,11 +5,14 @@ import com.utp.edu.pe.model.Doctor;
 import com.utp.edu.pe.model.Especialidad;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 public interface DoctorService {
-    public BodyResponse registrarDoctor(String idTransaccion, Doctor request);
+    public BodyResponse registrarDoctor(Doctor request, MultipartFile imagen);
+
+    public BodyResponse actualizarDoctor(Doctor request, MultipartFile imagen);
 
     public Page<Doctor> listarDoctor(Pageable pageable);
 }

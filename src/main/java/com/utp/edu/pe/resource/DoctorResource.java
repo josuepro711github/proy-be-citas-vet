@@ -3,10 +3,13 @@ package com.utp.edu.pe.resource;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.utp.edu.pe.bean.BodyResponse;
 import com.utp.edu.pe.bean.HeaderRequest;
+import com.utp.edu.pe.model.Cliente;
 import com.utp.edu.pe.model.Doctor;
+import com.utp.edu.pe.model.Especialidad;
 import com.utp.edu.pe.model.Mascota;
 import com.utp.edu.pe.request.PageableRequest;
 import com.utp.edu.pe.service.DoctorService;
+import com.utp.edu.pe.service.EspecialidadService;
 import com.utp.edu.pe.util.Constantes;
 import com.utp.edu.pe.util.PropertiesInterno;
 import org.slf4j.Logger;
@@ -19,6 +22,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 import static com.utp.edu.pe.util.ParametroValid.*;
 import static com.utp.edu.pe.util.PetLifeUtil.*;
@@ -94,6 +100,16 @@ public class DoctorResource {
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
+
+
+    @Autowired
+    EspecialidadService especialidadService;
+    @GetMapping(value = "/lista-especialidades")
+    public ResponseEntity<List<Especialidad>> listaEspecialidades(){
+        List<Especialidad> lista =   especialidadService.listaEspecialidades();
+        return new ResponseEntity<>(lista,HttpStatus.OK);
+    }
+
 
 
     @PostMapping(value = Constantes.PATH_LISTAR_DOCTORES, consumes = "application/json", produces = "application/json")

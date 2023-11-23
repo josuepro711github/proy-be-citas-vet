@@ -3,8 +3,14 @@ package com.utp.edu.pe.resource;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.utp.edu.pe.bean.BodyResponse;
+import com.utp.edu.pe.model.Cliente;
+import com.utp.edu.pe.model.Especialidad;
 import com.utp.edu.pe.model.Mascota;
+import com.utp.edu.pe.model.Raza;
+import com.utp.edu.pe.repository.ClienteRepository;
+import com.utp.edu.pe.repository.MascotaRepository;
 import com.utp.edu.pe.request.PageableRequest;
+import com.utp.edu.pe.service.EspecialidadService;
 import com.utp.edu.pe.service.MascotaService;
 import com.utp.edu.pe.util.Constantes;
 import com.utp.edu.pe.util.PropertiesInterno;
@@ -15,9 +21,14 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
+
+import static com.utp.edu.pe.util.ParametroValid.*;
 
 @RestController
 @RequestMapping(Constantes.BASEPATH+Constantes.PATH_MASCOTA)
@@ -71,7 +82,7 @@ public class MascotaResource {
     }
 
 
-   @PostMapping(value = Constantes.PATH_LISTAR_MASCOTAS, consumes = "application/json", produces = "application/json")
+    @PostMapping(value = Constantes.PATH_LISTAR_MASCOTAS, consumes = "application/json", produces = "application/json")
     public Page<Mascota> listarMascotas(@RequestBody PageableRequest request) {
         Page<Mascota> mascotas = null;
         Pageable pageable = null;
@@ -85,7 +96,6 @@ public class MascotaResource {
             mascotas = mascotaService.listarMascota(pageable);
         }catch (Exception e){
 
-            System.out.println("Ocurrio una excepcion: " + e + e.getMessage());
             request.setOrderParameter("alias");
 
             pageable = e.getMessage().contains("No property 'id'")? PageRequest.of(request.getPage(), request.getSize() ):
@@ -95,4 +105,9 @@ public class MascotaResource {
         }
         return mascotas;
     }
+
+
+
+
+
 }
