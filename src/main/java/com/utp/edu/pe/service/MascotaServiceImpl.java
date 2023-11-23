@@ -28,7 +28,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Service
-public class MascotaServiceImpl implements MascotaService{
+public class MascotaServiceImpl implements MascotaService {
 
     @Autowired
     private PropertiesInterno propertiesInterno;
@@ -40,6 +40,7 @@ public class MascotaServiceImpl implements MascotaService{
 
     @Override
     public BodyResponse registrarMascota(Mascota request, MultipartFile imagen) {
+        System.out.println("INICIO Método: registrarMascota");
         BodyResponse response = new BodyResponse();
 
 
@@ -52,11 +53,11 @@ public class MascotaServiceImpl implements MascotaService{
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String fechaFormateada = dateFormat.format(fecha);
 
-        String nombreImagen = imagenService.cargarImagen(imagen,fechaFormateada);
+        String nombreImagen = imagenService.cargarImagen(imagen, fechaFormateada);
         request.setImagen(nombreImagen);
 
 
-        int j = 0;
+/*        int j = 0;
         String[] nombresH = {"Josue","Maximo","Brad","Moises","Juan","Jesus","Miguel","Angelo"};
         String[] nombresF = {"Ingrid","Genesis","Valeria","Diana","Angie","Maria","Katy","Leydi"};
         for(int i = 0; i<40; i++){
@@ -79,19 +80,19 @@ public class MascotaServiceImpl implements MascotaService{
 
             mascotaRepository.save(request);
             j++;
-        }
+        }*/
 
-//        try {
-//          //  mascotaRepository.save(request);
-//
-//            response.setCodigoRespuesta(propertiesInterno.idf0Codigo);
-//            response.setMensajeRespuesta(propertiesInterno.idf0Mensaje);
-//        } catch (DataIntegrityViolationException e) {
-//
-//            response.setCodigoRespuesta(propertiesInterno.idt2Codigo);
-//            response.setMensajeRespuesta(propertiesInterno.idt2Mensaje.replace(Constantes.TAG_MENSAJE, e.getRootCause().getMessage()));
-//
-//        }
+        try {
+            mascotaRepository.save(request);
+
+            response.setCodigoRespuesta(propertiesInterno.idf0Codigo);
+            response.setMensajeRespuesta(propertiesInterno.idf0Mensaje);
+        } catch (DataIntegrityViolationException e) {
+
+            response.setCodigoRespuesta(propertiesInterno.idt2Codigo);
+            response.setMensajeRespuesta(propertiesInterno.idt2Mensaje.replace(Constantes.TAG_MENSAJE, e.getRootCause().getMessage()));
+
+        }
 
         return response;
     }

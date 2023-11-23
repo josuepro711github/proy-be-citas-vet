@@ -71,7 +71,7 @@ public class MascotaResource {
     }
 
 
-    @PostMapping(value = Constantes.PATH_LISTAR_MASCOTAS, consumes = "application/json", produces = "application/json")
+   @PostMapping(value = Constantes.PATH_LISTAR_MASCOTAS, consumes = "application/json", produces = "application/json")
     public Page<Mascota> listarMascotas(@RequestBody PageableRequest request) {
         Page<Mascota> mascotas = null;
         Pageable pageable = null;
@@ -95,5 +95,4 @@ public class MascotaResource {
         }
         return mascotas;
     }
-
 }
