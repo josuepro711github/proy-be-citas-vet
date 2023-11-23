@@ -169,6 +169,7 @@ public class DoctorResource {
                     PageRequest.of(request.getPage(), request.getSize(), Sort.by(asc, request.getOrderParameter()));
 
             mascotas = doctorService.listarDoctor(pageable);
+            System.out.println("GAAAAAAAAAAAA");
         }
         return mascotas;
     }
