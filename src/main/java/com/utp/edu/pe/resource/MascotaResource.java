@@ -85,6 +85,7 @@ public class MascotaResource {
             mascotas = mascotaService.listarMascota(pageable);
         }catch (Exception e){
 
+            System.out.println("Ocurrio una excepcion: " + e + e.getMessage());
             request.setOrderParameter("alias");
 
             pageable = e.getMessage().contains("No property 'id'")? PageRequest.of(request.getPage(), request.getSize() ):
