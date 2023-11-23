@@ -1,6 +1,7 @@
 package com.utp.edu.pe.resource;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.utp.edu.pe.bean.BodyResponse;
 import com.utp.edu.pe.bean.HeaderRequest;
 import com.utp.edu.pe.model.Cliente;
@@ -41,42 +42,29 @@ public class DoctorResource {
     @Autowired
     private DoctorService doctorService;
 
-    @PostMapping(value = Constantes.PATH_REGISTRAR, consumes = "application/json", produces = "application/json")
+    @PostMapping(value = Constantes.PATH_REGISTRAR)
     public ResponseEntity<BodyResponse> registrarDoctor(
-            @RequestHeader(name = "idTransaccion", required = false) String idTransaccion,
-			@RequestHeader(name = "userId", required = false) String userId,
-            @RequestHeader(name = "msgid", required = false) String msgid,
-            @RequestHeader(name = "timestamp", required = false) String timestamp,
-            @RequestHeader(name = "accept", required = false) String accept,
-            @RequestHeader(name = "aplicacion", required = false) String aplicacion,
-            @RequestBody(required = true) Doctor request) throws JsonProcessingException {
+            @RequestParam("doctor")  String doctor,
+            @RequestParam("imagen") MultipartFile imagen) throws JsonProcessingException {
 
         BodyResponse response = null;
-        String requestPrint = null;
         String responsePrint = null;
-        HeaderRequest headerRequest = new HeaderRequest();
 
-        setHeaders(headerRequest, idTransaccion, userId, msgid, accept, aplicacion, timestamp);
-        String msjTx = Constantes.CHAR_CORCHETE_IZQUIERDO + Constantes.REGISTRAR_DOCTOR + Constantes.ID_TXT + idTransaccion
-                + Constantes.MSG_ID + headerRequest.getMsgid() + Constantes.CHAR_CORCHETE_DERECHO;
-
-
-        System.out.print(responsePrint);
+        ObjectMapper objectMapper = new ObjectMapper();
+        Doctor request = objectMapper.readValue(doctor, Doctor.class);
+        System.out.println("request: "+request);
 
         try {
 
             String validParam = validarRegistrarDoctor(request);
-            requestPrint = printPrettyJSONString(request);
 
-            LOG.info(msjTx + Constantes.PARAMETROS_ENTRADA + Constantes.SALTO_LINEA + requestPrint);
 
             if(Constantes.CADENA_CERO.equalsIgnoreCase(validParam)){
-                LOG.info(msjTx + Constantes.VALIDACIONPARAMETROSCORRECTOS);
-                response = doctorService.registrarDoctor(idTransaccion, request);
+
+                response = doctorService.registrarDoctor( request,imagen);
             }else {
-                LOG.info(msjTx + Constantes.VALIDACIONPARAMETROSINCORRECTOS);
+                LOG.info(Constantes.VALIDACIONPARAMETROSINCORRECTOS);
                 response = new BodyResponse();
-                response.setIdTransaccion(idTransaccion);
                 response.setCodigoRespuesta(propertiesInterno.idf1Codigo);
                 response.setMensajeRespuesta(propertiesInterno.idf1Mensaje.replace(Constantes.TAG_PARAMETRO,validParam));
 
@@ -84,9 +72,9 @@ public class DoctorResource {
             }
 
         } catch (Exception e){
-            LOG.error(msjTx + Constantes.MENSAJERROR + e.toString(), e);
+            LOG.error( Constantes.MENSAJERROR + e.toString(), e);
             response = new BodyResponse();
-            response.setIdTransaccion(idTransaccion);
+
             response.setCodigoRespuesta(propertiesInterno.idt3Codigo);
             response.setMensajeRespuesta(propertiesInterno.idt3Mensaje.replace(Constantes.TAG_MENSAJE,e.toString()));
 
@@ -95,7 +83,56 @@ public class DoctorResource {
 
             responsePrint = printPrettyJSONString(response);
 
-            LOG.info(msjTx + Constantes.PARAMETROS_SALIDA + Constantes.SALTO_LINEA + responsePrint);
+            LOG.info( Constantes.PARAMETROS_SALIDA + Constantes.SALTO_LINEA + responsePrint);
+        }
+
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+
+    @PostMapping(value = "actualizar")
+    public ResponseEntity<BodyResponse> actualizarDoctor(
+            @RequestParam("doctor")  String doctor,
+            @RequestParam("imagen") MultipartFile imagen) throws JsonProcessingException {
+
+        BodyResponse response = null;
+        String responsePrint = null;
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        Doctor request = objectMapper.readValue(doctor, Doctor.class);
+
+        System.out.print(responsePrint);
+
+        try {
+
+            String validParam = validarRegistrarDoctor(request);
+
+
+            if(Constantes.CADENA_CERO.equalsIgnoreCase(validParam)){
+
+                response = doctorService.actualizarDoctor( request,imagen);
+            }else {
+                LOG.info(Constantes.VALIDACIONPARAMETROSINCORRECTOS);
+                response = new BodyResponse();
+                response.setCodigoRespuesta(propertiesInterno.idf1Codigo);
+                response.setMensajeRespuesta(propertiesInterno.idf1Mensaje.replace(Constantes.TAG_PARAMETRO,validParam));
+
+                return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+            }
+
+        } catch (Exception e){
+            LOG.error( Constantes.MENSAJERROR + e.toString(), e);
+            response = new BodyResponse();
+
+            response.setCodigoRespuesta(propertiesInterno.idt3Codigo);
+            response.setMensajeRespuesta(propertiesInterno.idt3Mensaje.replace(Constantes.TAG_MENSAJE,e.toString()));
+
+            return new ResponseEntity<>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+        } finally {
+
+            responsePrint = printPrettyJSONString(response);
+
+            LOG.info( Constantes.PARAMETROS_SALIDA + Constantes.SALTO_LINEA + responsePrint);
         }
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
