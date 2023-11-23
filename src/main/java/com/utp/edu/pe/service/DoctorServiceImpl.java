@@ -78,14 +78,7 @@ public class DoctorServiceImpl implements DoctorService{
         BodyResponse response = new BodyResponse();
 
         try {
-            Usuario existeUsuario = usuarioRepository.findByEmail(request.getUsuario().getEmail());
-            if(null!=existeUsuario){
-                response.setCodigoRespuesta(propertiesInterno.idf2Codigo);
-                response.setMensajeRespuesta(propertiesInterno.idf2Mensaje.replace(Constantes.TAG_USUARIO, existeUsuario.getEmail()));
-                return response;
-            }
-            request.getUsuario().setContrasenia(new BCryptPasswordEncoder().encode(request.getUsuario().getContrasenia()));
-            request.getUsuario().getRol().setId_rol(Constantes.ROL_DOCTOR);
+
 
 //            Especialidad existeEspecialidad = especialidadRepository.findByDescripcion(request.getEspecialidad().getDescripcion());
 //            if(null==existeEspecialidad){
@@ -100,8 +93,8 @@ public class DoctorServiceImpl implements DoctorService{
                 String nombreImagen = imagenService.cargarImagen(imagen,"doctores");
                 request.getUsuario().setImagen(nombreImagen);
             }
-
-            Usuario usuarioGuardado = usuarioRepository.save(request.getUsuario());
+            System.out.println("Request "+ request.getUsuario());
+            Usuario usuarioGuardado = usuarioRepository.saveAndFlush(request.getUsuario());
             request.setUsuario(usuarioGuardado);
 
             doctorRepository.saveAndFlush(request);

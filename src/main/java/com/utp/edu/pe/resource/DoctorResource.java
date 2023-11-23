@@ -37,7 +37,7 @@ public class DoctorResource {
     @Autowired
     private DoctorService doctorService;
 
-    @PostMapping(value = Constantes.PATH_REGISTRAR, consumes = "application/json", produces = "application/json")
+    @PostMapping(value = Constantes.PATH_REGISTRAR)
     public ResponseEntity<BodyResponse> registrarDoctor(
             @RequestParam("doctor")  String doctor,
             @RequestParam("imagen") MultipartFile imagen) throws JsonProcessingException {
@@ -86,7 +86,7 @@ public class DoctorResource {
     }
 
 
-    @PostMapping(value = "actualizar", consumes = "application/json", produces = "application/json")
+    @PostMapping(value = "actualizar")
     public ResponseEntity<BodyResponse> actualizarDoctor(
             @RequestParam("doctor")  String doctor,
             @RequestParam("imagen") MultipartFile imagen) throws JsonProcessingException {
