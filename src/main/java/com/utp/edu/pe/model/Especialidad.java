@@ -20,4 +20,20 @@ public class Especialidad {
     @NotNull
     private String descripcion;
 
+
+    public Integer getId_especialidad() {
+        return id_especialidad;
+    }
+
+    public void setId_especialidad(Integer id_especialidad) {
+        this.id_especialidad = id_especialidad;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
 }

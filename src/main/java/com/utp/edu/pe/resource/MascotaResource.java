@@ -3,10 +3,14 @@ package com.utp.edu.pe.resource;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.utp.edu.pe.bean.BodyResponse;
+import com.utp.edu.pe.model.Cliente;
+import com.utp.edu.pe.model.Especialidad;
 import com.utp.edu.pe.model.Mascota;
 import com.utp.edu.pe.model.Raza;
+import com.utp.edu.pe.repository.ClienteRepository;
 import com.utp.edu.pe.repository.MascotaRepository;
 import com.utp.edu.pe.request.PageableRequest;
+import com.utp.edu.pe.service.EspecialidadService;
 import com.utp.edu.pe.service.MascotaService;
 import com.utp.edu.pe.util.Constantes;
 import com.utp.edu.pe.util.PropertiesInterno;
@@ -101,5 +105,9 @@ public class MascotaResource {
         }
         return mascotas;
     }
+
+
+
+
 
 }
