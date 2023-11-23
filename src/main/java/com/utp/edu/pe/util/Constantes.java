@@ -47,6 +47,7 @@ public class Constantes {
 
     public static final String PATH_REGISTRAR_MASCOTA = "/registrarMascota";
     public static final String PATH_LISTAR_MASCOTAS = "/listarMascotas";
+    public static final String PATH_LISTAR_DOCTORES = "/listarDoctores";
 
     //Roles
     public static final int ROL_DOCTOR = 2;

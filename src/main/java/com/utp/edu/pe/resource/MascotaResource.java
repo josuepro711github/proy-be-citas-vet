@@ -4,8 +4,6 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.utp.edu.pe.bean.BodyResponse;
 import com.utp.edu.pe.model.Mascota;
-import com.utp.edu.pe.model.Raza;
-import com.utp.edu.pe.repository.MascotaRepository;
 import com.utp.edu.pe.request.PageableRequest;
 import com.utp.edu.pe.service.MascotaService;
 import com.utp.edu.pe.util.Constantes;
@@ -17,14 +15,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
-
-import static com.utp.edu.pe.util.ParametroValid.*;
 
 @RestController
 @RequestMapping(Constantes.BASEPATH+Constantes.PATH_MASCOTA)

@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.utp.edu.pe.bean.BodyResponse;
 import com.utp.edu.pe.bean.HeaderRequest;
 import com.utp.edu.pe.model.Doctor;
+import com.utp.edu.pe.model.Mascota;
+import com.utp.edu.pe.request.PageableRequest;
 import com.utp.edu.pe.service.DoctorService;
 import com.utp.edu.pe.util.Constantes;
 import com.utp.edu.pe.util.PropertiesInterno;
@@ -11,6 +13,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -88,6 +93,31 @@ public class DoctorResource {
         }
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+
+    @PostMapping(value = Constantes.PATH_LISTAR_DOCTORES, consumes = "application/json", produces = "application/json")
+    public Page<Doctor> listarDoctores(@RequestBody PageableRequest request) {
+        Page<Doctor> mascotas = null;
+        Pageable pageable = null;
+        Sort.Direction asc = null;
+
+        String tipoOrden = request.getTypeOrder().toUpperCase();
+        asc = (tipoOrden.equals("ASC")) ? Sort.Direction.ASC : Sort.Direction.DESC;
+
+        try{
+            pageable = PageRequest.of(request.getPage(), request.getSize(), Sort.by(asc, request.getOrderParameter()));
+            mascotas = doctorService.listarDoctor(pageable);
+        }catch (Exception e){
+
+            request.setOrderParameter("id_usuario");
+
+            pageable = e.getMessage().contains("No property 'id'")? PageRequest.of(request.getPage(), request.getSize() ):
+                    PageRequest.of(request.getPage(), request.getSize(), Sort.by(asc, request.getOrderParameter()));
+
+            mascotas = doctorService.listarDoctor(pageable);
+        }
+        return mascotas;
     }
 
 }
