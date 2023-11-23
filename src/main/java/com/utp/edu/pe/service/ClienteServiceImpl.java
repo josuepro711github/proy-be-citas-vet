@@ -9,11 +9,13 @@ import com.utp.edu.pe.repository.ClienteRepository;
 import com.utp.edu.pe.repository.UsuarioRepository;
 import com.utp.edu.pe.util.Constantes;
 import com.utp.edu.pe.util.PropertiesInterno;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
 
 @Service
 public class ClienteServiceImpl implements ClienteService{
@@ -28,6 +30,8 @@ public class ClienteServiceImpl implements ClienteService{
 
     @Autowired
     private ImagenService imagenService;
+
+
     @Override
     public BodyResponse registrarCliente(Cliente request, MultipartFile imagen) {
 
@@ -57,10 +61,49 @@ public class ClienteServiceImpl implements ClienteService{
         } catch (DataIntegrityViolationException e){
             response.setCodigoRespuesta(propertiesInterno.idt2Codigo);
             response.setMensajeRespuesta(propertiesInterno.idt2Mensaje.replace(Constantes.TAG_MENSAJE, e.getRootCause().getMessage()));
+
         }
 
         return response;
     }
+
+
+    @Override
+    public BodyResponse actualizarCliente(Cliente request, MultipartFile imagen) {
+
+        BodyResponse response = new BodyResponse();
+
+        try {
+            Usuario existeUsuario = usuarioRepository.findByEmail(request.getUsuario().getEmail());
+
+            if(null!=existeUsuario) {
+                request.getUsuario().setContrasenia(new BCryptPasswordEncoder().encode(request.getUsuario().getContrasenia()));
+                request.getUsuario().getRol().setId_rol(Constantes.ROL_CLIENTE);
+
+                imagenService.eliminarImagen(existeUsuario.getImagen());
+                String nombreImagen = imagenService.cargarImagenCliente(imagen);
+                request.getUsuario().setImagen(nombreImagen);
+
+
+                Usuario usuarioGuardado = usuarioRepository.save(request.getUsuario());
+                request.setUsuario(usuarioGuardado);
+            } else{
+                response.setCodigoRespuesta(propertiesInterno.idf1Codigo);
+                response.setMensajeRespuesta(propertiesInterno.idf1Mensaje.replace(Constantes.TAG_USUARIO, existeUsuario.getEmail()));
+                return response;
+            }
+
+        } catch (DataIntegrityViolationException e){
+            response.setCodigoRespuesta(propertiesInterno.idt2Codigo);
+            response.setMensajeRespuesta(propertiesInterno.idt2Mensaje.replace(Constantes.TAG_MENSAJE, e.getRootCause().getMessage()));
+
+        }
+
+        return response;
+    }
+
+
+
 
 
 }

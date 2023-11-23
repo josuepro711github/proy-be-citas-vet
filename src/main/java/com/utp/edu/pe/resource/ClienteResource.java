@@ -78,6 +78,45 @@ public class ClienteResource {
 
     }
 
+    @PostMapping(value = Constantes.PATH_ACTUALIZAR_CLIENTE)
+    public ResponseEntity<BodyResponse> actualizarCliente(@RequestParam("cliente")  String cliente, @RequestParam("imagen") MultipartFile imagen)
+        throws JsonProcessingException {
+
+        BodyResponse response = null;
+
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            Cliente request = objectMapper.readValue(cliente, Cliente.class);
+
+            String validParam = validarRegistrarCliente(request);
+
+            if(Constantes.CADENA_CERO.equalsIgnoreCase(validParam)){
+
+                response = clienterService.actualizarCliente( request,imagen);
+
+            }else {
+                response = new BodyResponse();
+
+                response.setCodigoRespuesta(propertiesInterno.idf1Codigo);
+                response.setMensajeRespuesta(propertiesInterno.idf1Mensaje.replace(Constantes.TAG_PARAMETRO,validParam));
+
+                return new ResponseEntity<BodyResponse>(response, HttpStatus.BAD_REQUEST);
+            }
+
+        } catch (Exception e) {
+            response = new BodyResponse();
+
+            response.setCodigoRespuesta(propertiesInterno.idt3Codigo);
+            response.setMensajeRespuesta(propertiesInterno.idt3Mensaje.replace(Constantes.TAG_MENSAJE,e.toString()));
+
+            return new ResponseEntity<BodyResponse>(response, HttpStatus.INTERNAL_SERVER_ERROR);
+
+        }
+
+        return ResponseEntity.ok(response);
+    }
+
+
     @PostMapping(value = "/pruebaCliente")
     public ResponseEntity<BodyResponse> pruebaCliente(
             @RequestParam("cliente")  String cliente)  throws JsonProcessingException {
