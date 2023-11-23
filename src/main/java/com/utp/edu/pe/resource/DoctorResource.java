@@ -47,8 +47,7 @@ public class DoctorResource {
 
         ObjectMapper objectMapper = new ObjectMapper();
         Doctor request = objectMapper.readValue(doctor, Doctor.class);
-
-        System.out.print(responsePrint);
+        System.out.println("request: "+request);
 
         try {
 
