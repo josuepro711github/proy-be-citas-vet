@@ -60,14 +60,15 @@ public class ImagenServiceImpl implements ImagenService {
     }
 
     @Override
-    public void eliminarImagen(String nombreImg) {
-        Path filePath = Path.of("src/main/resources/imagenes/", nombreImg);
-
+    public void eliminarImagen(String nombreImg, String carpeta) {
+        Path filePath = Path.of("src/main/resources/imagenes/"+carpeta+"/", nombreImg);
+        System.out.println("filepath2: "+filePath.toString());
         try {
             if (Files.exists(filePath)) {
                 Files.delete(filePath);
             }
         } catch (IOException e) {
+            System.out.println("filepath3: "+filePath);
             e.printStackTrace();
         }
     }

@@ -5,6 +5,6 @@ import org.springframework.web.multipart.MultipartFile;
 public interface ImagenService {
     String cargarImagen(MultipartFile imagen, String carpeta);
 
-    void eliminarImagen(String nombreImg);
+    void eliminarImagen(String nombreImg,String carpeta);
 }
 
