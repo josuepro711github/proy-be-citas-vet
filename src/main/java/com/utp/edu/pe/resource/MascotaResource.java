@@ -95,7 +95,6 @@ public class MascotaResource {
             pageable = PageRequest.of(request.getPage(), request.getSize(), Sort.by(asc, request.getOrderParameter()));
             mascotas = mascotaService.listarMascota(pageable);
         }catch (Exception e){
-
             request.setOrderParameter("alias");
 
             pageable = e.getMessage().contains("No property 'id'")? PageRequest.of(request.getPage(), request.getSize() ):
