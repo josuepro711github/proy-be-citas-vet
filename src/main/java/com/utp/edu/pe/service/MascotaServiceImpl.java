@@ -43,55 +43,57 @@ public class MascotaServiceImpl implements MascotaService{
         BodyResponse response = new BodyResponse();
 
 
-        Timestamp fechaActual = new Timestamp(System.currentTimeMillis());
-
-        // Convertir Timestamp a Date
-        Date fecha = new Date(fechaActual.getTime());
-
-        // Formatear la fecha como una cadena
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String fechaFormateada = dateFormat.format(fecha);
-
-        String nombreImagen = imagenService.cargarImagen(imagen,fechaFormateada);
-        request.setImagen(nombreImagen);
-
-
-        int j = 0;
-        String[] nombresH = {"Josue","Maximo","Brad","Moises","Juan","Jesus","Miguel","Angelo"};
-        String[] nombresF = {"Ingrid","Genesis","Valeria","Diana","Angie","Maria","Katy","Leydi"};
-        for(int i = 0; i<40; i++){
-            request.setId_mascota(0);
-            System.out.println(nombresF[j]);
-            if(j == 7){
-                j=0;
-            }
-            if(i<=23){
-                request.setAlias(nombresH[j]);
-                request.setGenero("Masculino");
-
-            }else {
-                request.setAlias(nombresF[j]);
-                request.setGenero("Femenino");
-                Raza r = new Raza();
-                r.setId_raza(2);
-                request.setRaza(r);
-            }
-
-            mascotaRepository.save(request);
-            j++;
-        }
-
-//        try {
-//          //  mascotaRepository.save(request);
+//        Timestamp fechaActual = new Timestamp(System.currentTimeMillis());
 //
-//            response.setCodigoRespuesta(propertiesInterno.idf0Codigo);
-//            response.setMensajeRespuesta(propertiesInterno.idf0Mensaje);
-//        } catch (DataIntegrityViolationException e) {
+//        // Convertir Timestamp a Date
+//        Date fecha = new Date(fechaActual.getTime());
 //
-//            response.setCodigoRespuesta(propertiesInterno.idt2Codigo);
-//            response.setMensajeRespuesta(propertiesInterno.idt2Mensaje.replace(Constantes.TAG_MENSAJE, e.getRootCause().getMessage()));
+//        // Formatear la fecha como una cadena
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        String fechaFormateada = dateFormat.format(fecha);
 //
+//        String nombreImagen = imagenService.cargarImagen(imagen,"mascotas");
+//        request.setImagen(nombreImagen);
+//
+//
+//        int j = 0;
+//        String[] nombresH = {"Josue","Maximo","Brad","Moises","Juan","Jesus","Miguel","Angelo"};
+//        String[] nombresF = {"Ingrid","Genesis","Valeria","Diana","Angie","Maria","Katy","Leydi"};
+//        for(int i = 0; i<40; i++){
+//            request.setId_mascota(0);
+//            System.out.println(nombresF[j]);
+//            if(j == 7){
+//                j=0;
+//            }
+//            if(i<=23){
+//                request.setAlias(nombresH[j]);
+//                request.setGenero("Masculino");
+//
+//            }else {
+//                request.setAlias(nombresF[j]);
+//                request.setGenero("Femenino");
+//                Raza r = new Raza();
+//                r.setId_raza(2);
+//                request.setRaza(r);
+//            }
+//
+//            mascotaRepository.save(request);
+//            j++;
 //        }
+
+        try {
+            String nombreImagen = imagenService.cargarImagen(imagen,"mascotas");
+            request.setImagen(nombreImagen);
+            mascotaRepository.save(request);
+
+            response.setCodigoRespuesta(propertiesInterno.idf0Codigo);
+            response.setMensajeRespuesta(propertiesInterno.idf0Mensaje);
+        } catch (DataIntegrityViolationException e) {
+
+            response.setCodigoRespuesta(propertiesInterno.idt2Codigo);
+            response.setMensajeRespuesta(propertiesInterno.idt2Mensaje.replace(Constantes.TAG_MENSAJE, e.getRootCause().getMessage()));
+
+        }
 
         return response;
     }
@@ -99,6 +101,7 @@ public class MascotaServiceImpl implements MascotaService{
     @Override
     public Page<Mascota> listarMascota(Pageable pageable) {
         Page<Mascota> listaMascota = mascotaRepository.findAll(pageable);
+        System.out.println("Lista Mascota: " + mascotaRepository.findAll());
         return listaMascota;
     }
 

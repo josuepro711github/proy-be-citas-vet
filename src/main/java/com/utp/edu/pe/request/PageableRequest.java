@@ -35,6 +35,6 @@ public class PageableRequest {
     }
 
     public void setTypeOrder(String typeOrder) {
-        this.typeOrder = (typeOrder == null || typeOrder.isEmpty()) ? "DESC" : typeOrder;
+        this.typeOrder = (typeOrder == null || typeOrder.isEmpty()) ? "ASC" : typeOrder.toUpperCase();
     }
 }

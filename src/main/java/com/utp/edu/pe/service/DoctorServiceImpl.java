@@ -15,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,15 +31,15 @@ public class DoctorServiceImpl implements DoctorService{
     private EspecialidadRepository especialidadRepository;
     @Autowired
     private UsuarioRepository usuarioRepository;
-
+    @Autowired
+    private ImagenService imagenService;
     @Override
-    public BodyResponse registrarDoctor(String idTransaccion, Doctor request) {
+    public BodyResponse registrarDoctor(Doctor request, MultipartFile imagen) {
         BodyResponse response = new BodyResponse();
 
         try {
             Usuario existeUsuario = usuarioRepository.findByEmail(request.getUsuario().getEmail());
             if(null!=existeUsuario){
-                response.setIdTransaccion(idTransaccion);
                 response.setCodigoRespuesta(propertiesInterno.idf2Codigo);
                 response.setMensajeRespuesta(propertiesInterno.idf2Mensaje.replace(Constantes.TAG_USUARIO, existeUsuario.getEmail()));
                 return response;
@@ -46,13 +47,16 @@ public class DoctorServiceImpl implements DoctorService{
             request.getUsuario().setContrasenia(new BCryptPasswordEncoder().encode(request.getUsuario().getContrasenia()));
             request.getUsuario().getRol().setId_rol(Constantes.ROL_DOCTOR);
 
-            Especialidad existeEspecialidad = especialidadRepository.findByDescripcion(request.getEspecialidad().getDescripcion());
-            if(null==existeEspecialidad){
-                Especialidad especialidadGuardada = especialidadRepository.save(request.getEspecialidad());
-                request.setEspecialidad(especialidadGuardada);
-            }else{
-                request.setEspecialidad(existeEspecialidad);
-            }
+//            Especialidad existeEspecialidad = especialidadRepository.findByDescripcion(request.getEspecialidad().getDescripcion());
+//            if(null==existeEspecialidad){
+//                Especialidad especialidadGuardada = especialidadRepository.save(request.getEspecialidad());
+//                request.setEspecialidad(especialidadGuardada);
+//            }else{
+//                request.setEspecialidad(existeEspecialidad);
+//            }
+
+            String nombreImagen = imagenService.cargarImagen(imagen,"doctores");
+            request.getUsuario().setImagen(nombreImagen);
 
             Usuario usuarioGuardado = usuarioRepository.save(request.getUsuario());
             request.setUsuario(usuarioGuardado);
@@ -70,7 +74,45 @@ public class DoctorServiceImpl implements DoctorService{
     }
 
     @Override
+    public BodyResponse actualizarDoctor(Doctor request, MultipartFile imagen) {
+        BodyResponse response = new BodyResponse();
+
+        try {
+
+            Doctor doctorEncontrado =doctorRepository.findById(request.getId_doctor()).orElse(null);
+            request.getUsuario().setContrasenia(doctorEncontrado.getUsuario().getContrasenia());
+//            Especialidad existeEspecialidad = especialidadRepository.findByDescripcion(request.getEspecialidad().getDescripcion());
+//            if(null==existeEspecialidad){
+//                Especialidad especialidadGuardada = especialidadRepository.save(request.getEspecialidad());
+//                request.setEspecialidad(especialidadGuardada);
+//            }else{
+//                request.setEspecialidad(existeEspecialidad);
+//            }
+            if(!request.getUsuario().getImagen().equals("cambiado")){
+                imagenService.eliminarImagen(request.getUsuario().getImagen());
+            }else{
+                String nombreImagen = imagenService.cargarImagen(imagen,"doctores");
+                request.getUsuario().setImagen(nombreImagen);
+            }
+            System.out.println("Request "+ request.getUsuario());
+            Usuario usuarioGuardado = usuarioRepository.saveAndFlush(request.getUsuario());
+            request.setUsuario(usuarioGuardado);
+
+            doctorRepository.saveAndFlush(request);
+            response.setCodigoRespuesta(propertiesInterno.idf0Codigo);
+            response.setMensajeRespuesta(propertiesInterno.idf0Mensaje);
+
+        } catch (DataIntegrityViolationException e){
+            response.setCodigoRespuesta(propertiesInterno.idt2Codigo);
+            response.setMensajeRespuesta(propertiesInterno.idt2Mensaje.replace(Constantes.TAG_MENSAJE, e.getRootCause().getMessage()));
+        }
+
+        return response;
+    }
+
+    @Override
     public Page<Doctor> listarDoctor(Pageable pageable) {
+
         Page<Doctor> listaDoctor = doctorRepository.findAll(pageable);
         return listaDoctor;
     }

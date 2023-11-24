@@ -15,26 +15,26 @@ import java.util.Date;
 public class ImagenServiceImpl implements ImagenService {
 
 
+//    @Override
+//    public String cargarImagen(MultipartFile imagen, String fecha) {
+//        String nombreImg = " ";
+//
+//        try {
+//            fecha = fecha.replaceAll("[^a-zA-Z0-9_-]", "_");
+//            nombreImg = fecha+"_"+imagen.getOriginalFilename();
+//            Path targetPath = Path.of("src/main/resources/imagenes/", nombreImg);
+//
+//            Files.copy(imagen.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
+//            return nombreImg;
+//
+//        } catch (IOException ex) {
+//            throw new RuntimeException("No se pudo almacenar el archivo " + imagen.getOriginalFilename() + ". ¡Inténtalo de nuevo!",ex);
+//        }
+//
+//    }
+
     @Override
-    public String cargarImagen(MultipartFile imagen, String fecha) {
-        String nombreImg = " ";
-
-        try {
-            fecha = fecha.replaceAll("[^a-zA-Z0-9_-]", "_");
-            nombreImg = fecha+"_"+imagen.getOriginalFilename();
-            Path targetPath = Path.of("src/main/resources/imagenes/", nombreImg);
-
-            Files.copy(imagen.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
-            return nombreImg;
-
-        } catch (IOException ex) {
-            throw new RuntimeException("No se pudo almacenar el archivo " + imagen.getOriginalFilename() + ". ¡Inténtalo de nuevo!",ex);
-        }
-
-    }
-
-    @Override
-    public String cargarImagenCliente(MultipartFile imagen) {
+    public String cargarImagen(MultipartFile imagen, String carpeta) {
 
         String nombreImg = " ";
 
@@ -49,7 +49,7 @@ public class ImagenServiceImpl implements ImagenService {
             String fechaFormateada = dateFormat.format(fecha).replaceAll("[^a-zA-Z0-9_-]", "_");
 
             nombreImg = fechaFormateada+"_"+imagen.getOriginalFilename();
-            Path targetPath = Path.of("src/main/resources/imagenes/clientes/", nombreImg);
+            Path targetPath = Path.of("src/main/resources/imagenes/"+carpeta+"/", nombreImg);
 
             Files.copy(imagen.getInputStream(), targetPath, StandardCopyOption.REPLACE_EXISTING);
             return nombreImg;

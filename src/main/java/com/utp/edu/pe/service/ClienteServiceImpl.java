@@ -48,7 +48,7 @@ public class ClienteServiceImpl implements ClienteService{
             request.getUsuario().setContrasenia(new BCryptPasswordEncoder().encode(request.getUsuario().getContrasenia()));
             request.getUsuario().getRol().setId_rol(Constantes.ROL_CLIENTE);
 
-            String nombreImagen = imagenService.cargarImagenCliente(imagen);
+            String nombreImagen = imagenService.cargarImagen(imagen,"clientes");
             request.getUsuario().setImagen(nombreImagen);
 
             Usuario usuarioGuardado = usuarioRepository.save(request.getUsuario());
