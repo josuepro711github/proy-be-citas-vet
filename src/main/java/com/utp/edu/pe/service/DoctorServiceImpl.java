@@ -88,9 +88,8 @@ public class DoctorServiceImpl implements DoctorService{
 //            }else{
 //                request.setEspecialidad(existeEspecialidad);
 //            }
-            if(!request.getUsuario().getImagen().equals("cambiado")){
-                imagenService.eliminarImagen(request.getUsuario().getImagen());
-            }else{
+            if(request.getUsuario().getImagen().equals("cambiado")){
+                imagenService.eliminarImagen(doctorEncontrado.getUsuario().getImagen(),"doctores");
                 String nombreImagen = imagenService.cargarImagen(imagen,"doctores");
                 request.getUsuario().setImagen(nombreImagen);
             }
@@ -115,6 +114,15 @@ public class DoctorServiceImpl implements DoctorService{
 
         Page<Doctor> listaDoctor = doctorRepository.findAll(pageable);
         return listaDoctor;
+    }
+
+    @Override
+    public Doctor buscarDoctor(Integer id) {
+        Doctor buscarDoctor = doctorRepository.findById(id).orElse(null);
+        if(buscarDoctor != null){
+            buscarDoctor.getUsuario().setContrasenia("");
+        }
+        return doctorRepository.findById(id).orElse(null);
     }
 
 
