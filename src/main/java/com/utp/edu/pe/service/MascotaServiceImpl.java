@@ -101,6 +101,7 @@ public class MascotaServiceImpl implements MascotaService{
     @Override
     public Page<Mascota> listarMascota(Pageable pageable) {
         Page<Mascota> listaMascota = mascotaRepository.findAll(pageable);
+        System.out.println("Lista Mascota: " + mascotaRepository.findAll());
         return listaMascota;
     }
 

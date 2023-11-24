@@ -79,7 +79,8 @@ public class DoctorServiceImpl implements DoctorService{
 
         try {
 
-
+            Doctor doctorEncontrado =doctorRepository.findById(request.getId_doctor()).orElse(null);
+            request.getUsuario().setContrasenia(doctorEncontrado.getUsuario().getContrasenia());
 //            Especialidad existeEspecialidad = especialidadRepository.findByDescripcion(request.getEspecialidad().getDescripcion());
 //            if(null==existeEspecialidad){
 //                Especialidad especialidadGuardada = especialidadRepository.save(request.getEspecialidad());
@@ -111,6 +112,7 @@ public class DoctorServiceImpl implements DoctorService{
 
     @Override
     public Page<Doctor> listarDoctor(Pageable pageable) {
+
         Page<Doctor> listaDoctor = doctorRepository.findAll(pageable);
         return listaDoctor;
     }

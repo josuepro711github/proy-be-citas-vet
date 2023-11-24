@@ -155,21 +155,22 @@ public class DoctorResource {
         Pageable pageable = null;
         Sort.Direction asc = null;
 
-        String tipoOrden = request.getTypeOrder().toUpperCase();
-        asc = (tipoOrden.equals("ASC")) ? Sort.Direction.ASC : Sort.Direction.DESC;
+        String tipoOrden = request.getTypeOrder();
+        asc = Sort.Direction.valueOf(tipoOrden);
 
         try{
             pageable = PageRequest.of(request.getPage(), request.getSize(), Sort.by(asc, request.getOrderParameter()));
             mascotas = doctorService.listarDoctor(pageable);
-        }catch (Exception e){
 
-            request.setOrderParameter("id_usuario");
+        }catch (Exception e){
+            System.out.println("Message: "+e.getMessage());
+            request.setOrderParameter("usuario.nombre");
 
             pageable = e.getMessage().contains("No property 'id'")? PageRequest.of(request.getPage(), request.getSize() ):
                     PageRequest.of(request.getPage(), request.getSize(), Sort.by(asc, request.getOrderParameter()));
 
             mascotas = doctorService.listarDoctor(pageable);
-            System.out.println("GAAAAAAAAAAAA");
+
         }
         return mascotas;
     }
