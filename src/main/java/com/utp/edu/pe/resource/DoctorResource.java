@@ -90,7 +90,7 @@ public class DoctorResource {
     }
 
 
-    @PostMapping(value = "actualizar")
+    @PutMapping(value = "actualizar")
     public ResponseEntity<BodyResponse> actualizarDoctor(
             @RequestParam("doctor")  String doctor,
             @RequestParam("imagen") MultipartFile imagen) throws JsonProcessingException {
