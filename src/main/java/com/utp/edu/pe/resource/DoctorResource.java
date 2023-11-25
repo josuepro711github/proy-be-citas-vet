@@ -181,4 +181,11 @@ public class DoctorResource {
         return mascotas;
     }
 
+
+    @DeleteMapping(value = "/eliminar/{id_doctor}")
+    public ResponseEntity<Doctor> eliminarDoctor(@PathVariable("id_doctor") Integer id_doctor){
+        Doctor doctor = doctorService.eliminarDoctor(id_doctor);
+        return (doctor != null) ? new ResponseEntity<>(doctor, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
 }
