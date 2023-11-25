@@ -122,8 +122,20 @@ public class DoctorServiceImpl implements DoctorService{
         if(buscarDoctor != null){
             buscarDoctor.getUsuario().setContrasenia("");
         }
-        return doctorRepository.findById(id).orElse(null);
+        return buscarDoctor;
     }
+
+
+    @Override
+    public Doctor eliminarDoctor(Integer id) {
+        Doctor buscarDoctor = doctorRepository.findById(id).orElse(null);
+        if(buscarDoctor != null){
+            doctorRepository.deleteById(id);
+            usuarioRepository.deleteById(buscarDoctor.getUsuario().getId_usuario());
+        }
+        return buscarDoctor;
+    }
+
 
 
 }
