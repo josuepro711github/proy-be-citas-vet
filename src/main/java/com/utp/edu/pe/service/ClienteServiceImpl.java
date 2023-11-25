@@ -81,7 +81,7 @@ public class ClienteServiceImpl implements ClienteService{
                 request.getUsuario().getRol().setId_rol(Constantes.ROL_CLIENTE);
 
                 imagenService.eliminarImagen(existeUsuario.getImagen());
-                String nombreImagen = imagenService.cargarImagenCliente(imagen);
+                String nombreImagen = imagenService.cargarImagen(imagen, "clientes");
                 request.getUsuario().setImagen(nombreImagen);
 
 
