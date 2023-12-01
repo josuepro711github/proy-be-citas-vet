@@ -5,7 +5,6 @@ import javax.validation.constraints.NotNull;
 
 import lombok.*;
 
-import java.sql.Date;
 
 @Getter
 @Setter
@@ -20,7 +19,7 @@ public class Cita {
     private Integer id_cita;
 
     @NotNull
-    private Date fecha;
+    private String fecha;
 
     @NotNull
     private String motivo;
@@ -47,11 +46,11 @@ public class Cita {
         this.id_cita = id_cita;
     }
 
-    public Date getFecha() {
+    public String getFecha() {
         return fecha;
     }
 
-    public void setFecha(Date fecha) {
+    public void setFecha(String fecha) {
         this.fecha = fecha;
     }
 
@@ -94,4 +93,8 @@ public class Cita {
     public void setDoctor(Doctor doctor) {
         this.doctor = doctor;
     }
+
+
+
+
 }

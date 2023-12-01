@@ -60,7 +60,8 @@ public class CitaServiceImpl implements CitaService{
 
         try {
             Cita citaEncontrada = citaRepository.findById(request.getCita().getId_cita()).orElse(null);
-            if(citaEncontrada!=null){
+
+            if(citaEncontrada==null){
                 return null;
             }
 
