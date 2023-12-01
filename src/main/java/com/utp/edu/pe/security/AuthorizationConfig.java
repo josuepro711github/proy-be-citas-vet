@@ -75,8 +75,8 @@ public class AuthorizationConfig extends AuthorizationServerConfigurerAdapter {
                 Map<String, Object> infoAdicional = new HashMap<>();
                 infoAdicional.put("id", usuario.getId_usuario());
                 infoAdicional.put("nombre", usuario.getNombre());
-                infoAdicional.put("apellido paterno", usuario.getApellido_paterno());
-                infoAdicional.put("apellido materno", usuario.getApellido_materno());
+                infoAdicional.put("apellido_paterno", usuario.getApellido_paterno());
+                infoAdicional.put("apellido_materno", usuario.getApellido_materno());
                 infoAdicional.put("imagen", usuario.getImagen());
                 infoAdicional.put("email", email);
                 infoAdicional.put("imagen", usuario.getImagen());

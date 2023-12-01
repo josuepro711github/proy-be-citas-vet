@@ -15,4 +15,7 @@ public interface DoctorService {
     public BodyResponse actualizarDoctor(Doctor request, MultipartFile imagen);
 
     public Page<Doctor> listarDoctor(Pageable pageable);
+    public Doctor buscarDoctor(Integer id);
+
+    public Doctor eliminarDoctor(Integer id);
 }

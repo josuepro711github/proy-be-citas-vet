@@ -147,6 +147,12 @@ public class DoctorResource {
         return new ResponseEntity<>(lista,HttpStatus.OK);
     }
 
+    @GetMapping(value = "/buscar/{id_doctor}")
+    public ResponseEntity<Doctor> buscarDoctor(@PathVariable("id_doctor") Integer id_doctor){
+        Doctor doctor = doctorService.buscarDoctor(id_doctor);
+        return (doctor != null) ? new ResponseEntity<>(doctor, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+
 
 
     @PostMapping(value = Constantes.PATH_LISTAR_DOCTORES, consumes = "application/json", produces = "application/json")
@@ -173,6 +179,13 @@ public class DoctorResource {
 
         }
         return mascotas;
+    }
+
+
+    @DeleteMapping(value = "/eliminar/{id_doctor}")
+    public ResponseEntity<Doctor> eliminarDoctor(@PathVariable("id_doctor") Integer id_doctor){
+        Doctor doctor = doctorService.eliminarDoctor(id_doctor);
+        return (doctor != null) ? new ResponseEntity<>(doctor, HttpStatus.OK) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 }
