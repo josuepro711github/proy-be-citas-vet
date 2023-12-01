@@ -81,6 +81,19 @@ public class MascotaResource {
         return ResponseEntity.ok(response);
     }
 
+    @PutMapping(value = Constantes.PATH_ACTUALIZAR_MASCOTA)
+    public ResponseEntity<BodyResponse> actualizarMascota(@RequestParam("mascota")  String mascota,
+                                                         @RequestParam("imagen") MultipartFile imagen) throws JsonProcessingException {
+
+
+        BodyResponse response = null;
+        ObjectMapper objectMapper = new ObjectMapper();
+        Mascota mascotaObj = objectMapper.readValue(mascota, Mascota.class);
+        response = mascotaService.actualizarMascota( mascotaObj,imagen);
+
+        return ResponseEntity.ok(response);
+    }
+
 
     @PostMapping(value = Constantes.PATH_LISTAR_MASCOTAS, consumes = "application/json", produces = "application/json")
     public Page<Mascota> listarMascotas(@RequestBody PageableRequest request) {
@@ -105,8 +118,6 @@ public class MascotaResource {
         }
         return mascotas;
     }
-
-
 
 
 

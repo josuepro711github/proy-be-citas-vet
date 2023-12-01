@@ -99,6 +99,35 @@ public class MascotaServiceImpl implements MascotaService{
     }
 
     @Override
+    public BodyResponse actualizarMascota(Mascota request, MultipartFile imagen) {
+        BodyResponse response = new BodyResponse();
+
+
+        try {
+            Mascota mascotaEncontrada = mascotaRepository.findById(request.getId_mascota()).orElse(null);
+            if(mascotaEncontrada == null){
+                return null;
+            }
+            if(request.getImagen().equals("cambiado")){
+                imagenService.eliminarImagen(mascotaEncontrada.getImagen(),"mascotas");
+                String nombreImagen = imagenService.cargarImagen(imagen,"mascotas");
+                request.setImagen(nombreImagen);
+            }
+            mascotaRepository.save(request);
+
+            response.setCodigoRespuesta(propertiesInterno.idf0Codigo);
+            response.setMensajeRespuesta(propertiesInterno.idf0Mensaje);
+        } catch (DataIntegrityViolationException e) {
+
+            response.setCodigoRespuesta(propertiesInterno.idt2Codigo);
+            response.setMensajeRespuesta(propertiesInterno.idt2Mensaje.replace(Constantes.TAG_MENSAJE, e.getRootCause().getMessage()));
+
+        }
+
+        return response;
+    }
+
+    @Override
     public Page<Mascota> listarMascota(Pageable pageable) {
         Page<Mascota> listaMascota = mascotaRepository.findAll(pageable);
         System.out.println("Lista Mascota: " + mascotaRepository.findAll());
