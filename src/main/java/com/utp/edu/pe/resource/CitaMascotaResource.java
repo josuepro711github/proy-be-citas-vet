@@ -35,7 +35,7 @@ public class CitaMascotaResource {
     @Autowired
     private CitaService citaService;
 
-    @PostMapping(value = Constantes.PATH_REGISTRAR_CITAS, consumes = "application/json", produces = "application/json")
+    @PostMapping(value = Constantes.PATH_REGISTRAR_CITA, consumes = "application/json", produces = "application/json")
     public ResponseEntity<CitaMascota> registrarCitaMascota(
             @RequestBody CitaMascota request)  throws JsonProcessingException {
 
@@ -47,19 +47,22 @@ public class CitaMascotaResource {
         return new ResponseEntity<CitaMascota>(citaMascotaRegistrada, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @PutMapping(value = Constantes.PATH_ACTUALIZAR_CITAS, consumes = "application/json", produces = "application/json")
+    @PutMapping(value = Constantes.PATH_ACTUALIZAR_CITA)
     public ResponseEntity<CitaMascota> actualizarCita(
-            @RequestBody CitaMascota request)  throws JsonProcessingException {
+            @RequestBody CitaMascota request
+    )  throws JsonProcessingException {
 
         CitaMascota citaMascotaRegistrada = citaService.actualizarCita(request);
         if(citaMascotaRegistrada!= null){
             return ResponseEntity.ok(citaMascotaRegistrada);
         }
         return new ResponseEntity<CitaMascota>(citaMascotaRegistrada, HttpStatus.INTERNAL_SERVER_ERROR);
+
+
     }
 
 
-    @DeleteMapping(value = Constantes.PATH_REGISTRAR_CITAS, consumes = "application/json", produces = "application/json")
+    @DeleteMapping(value = Constantes.PATH_ELIMINAR_CITA, consumes = "application/json", produces = "application/json")
     public ResponseEntity<Void> eliminarCita(
             @RequestBody CitaMascota request)  throws JsonProcessingException {
         citaService.eliminarCita(request);

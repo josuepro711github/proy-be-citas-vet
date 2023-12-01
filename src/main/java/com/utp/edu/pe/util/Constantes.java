@@ -49,9 +49,9 @@ public class Constantes {
     public static final String PATH_REGISTRAR_MASCOTA = "/registrarMascota";
     public static final String PATH_ACTUALIZAR_MASCOTA = "/actualizarMascota";
 
-    public static final String PATH_REGISTRAR_CITAS = "/registrarCitas";
-
-    public static final String PATH_ACTUALIZAR_CITAS = "/actualizarCitas";
+    public static final String PATH_REGISTRAR_CITA = "/registrarCita";
+    public static final String PATH_ELIMINAR_CITA = "/eliminarCita";
+    public static final String PATH_ACTUALIZAR_CITA = "/actualizarCita";
     public static final String PATH_LISTAR_MASCOTAS = "/listarMascotas";
     public static final String PATH_LISTAR_DOCTORES = "/listarDoctores";
 

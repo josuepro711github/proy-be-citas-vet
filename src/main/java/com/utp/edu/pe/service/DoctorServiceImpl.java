@@ -12,6 +12,7 @@ import com.utp.edu.pe.util.PropertiesInterno;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -113,7 +114,17 @@ public class DoctorServiceImpl implements DoctorService{
     public Page<Doctor> listarDoctor(Pageable pageable) {
 
         Page<Doctor> listaDoctor = doctorRepository.findAll(pageable);
-        return listaDoctor;
+
+        List<Doctor> lista = listaDoctor.getContent(); // Obtener la lista de objetos de la página
+        List<Doctor> listaNueva = new ArrayList<>();
+        for(Doctor d : lista){
+            if(!d.getEstado().equals("eliminado")){
+                listaNueva.add(d);
+            }
+        }
+        Page<Doctor> nuevaListaPage = new PageImpl<>(listaNueva, pageable, listaDoctor.getTotalElements());
+
+        return nuevaListaPage;
     }
 
     @Override
@@ -130,8 +141,8 @@ public class DoctorServiceImpl implements DoctorService{
     public Doctor eliminarDoctor(Integer id) {
         Doctor buscarDoctor = doctorRepository.findById(id).orElse(null);
         if(buscarDoctor != null){
-            doctorRepository.deleteById(id);
-            usuarioRepository.deleteById(buscarDoctor.getUsuario().getId_usuario());
+            buscarDoctor.setEstado("eliminado");
+            doctorRepository.saveAndFlush(buscarDoctor);
         }
         return buscarDoctor;
     }
