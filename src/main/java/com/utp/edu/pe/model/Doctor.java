@@ -29,6 +29,7 @@ public class Doctor {
     @JoinColumn(name = "id_especialidad",referencedColumnName = "id_especialidad")
     private Especialidad especialidad;
 
+    private String estado;
 
     public Integer getId_doctor() {
         return id_doctor;
@@ -52,5 +53,13 @@ public class Doctor {
 
     public void setEspecialidad(Especialidad especialidad) {
         this.especialidad = especialidad;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 }

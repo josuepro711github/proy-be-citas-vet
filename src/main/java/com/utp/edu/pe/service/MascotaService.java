@@ -10,5 +10,6 @@ import org.springframework.web.multipart.MultipartFile;
 public interface MascotaService {
     public BodyResponse registrarMascota(Mascota request, MultipartFile imagen);
 
+    public BodyResponse actualizarMascota(Mascota request, MultipartFile imagen);
     Page<Mascota> listarMascota(Pageable pageable);
 }

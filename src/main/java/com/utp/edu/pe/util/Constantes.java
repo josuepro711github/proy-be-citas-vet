@@ -42,12 +42,18 @@ public class Constantes {
 
     public static final String PATH_CLIENTE = "/cliente";
     public static final String PATH_MASCOTA = "/mascota";
+    public static final String PATH_CITA = "/cita";
 
     public static final String PATH_REGISTRAR_CLIENTE = "/registrarCliente";
 
     public static final String PATH_ACTUALIZAR_CLIENTE = "/actualizarCliente";
 
     public static final String PATH_REGISTRAR_MASCOTA = "/registrarMascota";
+    public static final String PATH_ACTUALIZAR_MASCOTA = "/actualizarMascota";
+
+    public static final String PATH_REGISTRAR_CITA = "/registrarCita";
+    public static final String PATH_ELIMINAR_CITA = "/eliminarCita";
+    public static final String PATH_ACTUALIZAR_CITA = "/actualizarCita";
     public static final String PATH_LISTAR_MASCOTAS = "/listarMascotas";
     public static final String PATH_LISTAR_DOCTORES = "/listarDoctores";
 
