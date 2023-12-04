@@ -80,9 +80,11 @@ public class AuthorizationConfig extends AuthorizationServerConfigurerAdapter {
                 infoAdicional.put("imagen", usuario.getImagen());
                 infoAdicional.put("email", email);
                 infoAdicional.put("imagen", usuario.getImagen());
-                infoAdicional.put("fecha y hora", fechaHoraActualString);
+                infoAdicional.put("fecha_hora", fechaHoraActualString);
                 infoAdicional.put("rol", usuario.getRol().getId_rol());
-                infoAdicional.put("descripcion rol", usuario.getRol().getTipo_rol());
+                infoAdicional.put("descripcion_rol", usuario.getRol().getTipo_rol());
+                infoAdicional.put("dni", usuario.getDni());
+                infoAdicional.put("telefono", usuario.getTelefono());
 
 
                 DefaultOAuth2AccessToken token = new DefaultOAuth2AccessToken(accessToken);
