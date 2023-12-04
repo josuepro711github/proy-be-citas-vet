@@ -19,4 +19,20 @@ public class Especie {
 
     @NotNull
     private String descripcion;
+
+    public Integer getId_especie() {
+        return id_especie;
+    }
+
+    public void setId_especie(Integer id_especie) {
+        this.id_especie = id_especie;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
 }
