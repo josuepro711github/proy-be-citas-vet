@@ -1,19 +1,21 @@
 package com.utp.edu.pe.service;
 
 import com.utp.edu.pe.bean.BodyResponse;
-import com.utp.edu.pe.model.Cita;
-import com.utp.edu.pe.model.CitaMascota;
-import com.utp.edu.pe.model.Usuario;
-import com.utp.edu.pe.repository.CitaMascotaRepository;
-import com.utp.edu.pe.repository.CitaRepository;
-import com.utp.edu.pe.repository.UsuarioRepository;
+import com.utp.edu.pe.model.*;
+import com.utp.edu.pe.repository.*;
 import com.utp.edu.pe.util.Constantes;
 import com.utp.edu.pe.util.PropertiesInterno;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class CitaServiceImpl implements CitaService{
@@ -98,6 +100,54 @@ public class CitaServiceImpl implements CitaService{
         }
 
 
+    }
+
+    @Override
+    public Page<CitaMascota> listarCitasPorDoctor(Integer id_doctor,Pageable pageable) {
+
+        Doctor doctor = new Doctor();
+        doctor.setId_doctor(id_doctor);
+
+        Page<CitaMascota> listaCita = citaMascotaRepository.findByCitaDoctor(doctor,pageable);
+        if(listaCita.isEmpty()){
+            return null;
+        }
+
+        return listaCita;
+    }
+
+    @Override
+    public Page<CitaMascota> listarCitasPorCliente(Integer id_cliente, Pageable pageable) {
+        Cliente cliente = new Cliente();
+        cliente.setId_cliente(id_cliente);
+
+        Page<CitaMascota> listaCita = citaMascotaRepository.findByMascotaCliente(cliente,pageable);
+
+        if(listaCita.isEmpty()){
+            return null;
+        }
+
+        return listaCita;
+    }
+
+    @Override
+    public Cita cancelarCita(Integer id_cita) {
+        Cita cita = citaRepository.findById(id_cita).orElse(null);
+        if (cita != null){
+            cita.setEstado(2);
+            citaRepository.saveAndFlush(cita);
+        }
+        return cita;
+    }
+
+    @Override
+    public Cita terminarCita(Integer id_cita) {
+        Cita cita = citaRepository.findById(id_cita).orElse(null);
+        if (cita != null){
+            cita.setEstado(1);
+            citaRepository.saveAndFlush(cita);
+        }
+        return cita;
     }
 
 

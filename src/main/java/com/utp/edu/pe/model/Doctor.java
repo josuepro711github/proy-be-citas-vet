@@ -29,6 +29,7 @@ public class Doctor {
     private Especialidad especialidad;
 
     private String estado;
+    private String descripcion_perfil;
 
     public Integer getId_doctor() {
         return id_doctor;
@@ -60,5 +61,13 @@ public class Doctor {
 
     public void setEstado(String estado) {
         this.estado = estado;
+    }
+
+    public String getDescripcion_perfil() {
+        return descripcion_perfil;
+    }
+
+    public void setDescripcion_perfil(String descripcion_perfil) {
+        this.descripcion_perfil = descripcion_perfil;
     }
 }
