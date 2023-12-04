@@ -3,10 +3,7 @@ package com.utp.edu.pe.resource;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.utp.edu.pe.bean.BodyResponse;
-import com.utp.edu.pe.model.Cliente;
-import com.utp.edu.pe.model.Especialidad;
-import com.utp.edu.pe.model.Mascota;
-import com.utp.edu.pe.model.Raza;
+import com.utp.edu.pe.model.*;
 import com.utp.edu.pe.repository.ClienteRepository;
 import com.utp.edu.pe.repository.MascotaRepository;
 import com.utp.edu.pe.request.PageableRequest;
@@ -95,8 +92,8 @@ public class MascotaResource {
     }
 
 
-    @PostMapping(value = Constantes.PATH_LISTAR_MASCOTAS, consumes = "application/json", produces = "application/json")
-    public Page<Mascota> listarMascotas(@RequestBody PageableRequest request) {
+    @PostMapping(value = Constantes.PATH_LISTAR_MASCOTAS_POR_CLIENTE, consumes = "application/json", produces = "application/json")
+    public Page<Mascota> listarMascotasPorCliente(@RequestBody PageableRequest request,  @PathVariable("id_cliente") Integer id_cliente) {
         Page<Mascota> mascotas = null;
         Pageable pageable = null;
         Sort.Direction asc = null;
@@ -106,18 +103,31 @@ public class MascotaResource {
 
         try{
             pageable = PageRequest.of(request.getPage(), request.getSize(), Sort.by(asc, request.getOrderParameter()));
-            mascotas = mascotaService.listarMascota(pageable);
+            mascotas = mascotaService.listarMascotasPorCliente(id_cliente,pageable);
         }catch (Exception e){
-            request.setOrderParameter("alias");
+            System.out.println("Mensaje: " + e.getMessage());
+//            request.setOrderParameter("alias");
+//
+//            pageable = e.getMessage().contains("No property 'id'")? PageRequest.of(request.getPage(), request.getSize() ):
+//                            PageRequest.of(request.getPage(), request.getSize(), Sort.by(asc, request.getOrderParameter()));
 
-            pageable = e.getMessage().contains("No property 'id'")? PageRequest.of(request.getPage(), request.getSize() ):
-                            PageRequest.of(request.getPage(), request.getSize(), Sort.by(asc, request.getOrderParameter()));
-
-            mascotas = mascotaService.listarMascota(pageable);
+//            mascotas = mascotaService.listarMascota(pageable);
         }
         return mascotas;
     }
 
 
+
+    @GetMapping(value = "/listarRazasPorEspecie/{id_especie}")
+    public ResponseEntity<List<Raza>> listarRazasPorEspecie(@PathVariable("id_especie") Integer id_especie){
+        List<Raza> lista =   mascotaService.listarRazasPorEspecie(id_especie);
+        return new ResponseEntity<>(lista,HttpStatus.OK);
+    }
+
+    @GetMapping(value = "/listarEspecies")
+    public ResponseEntity<List<Especie>> listarEspecies(){
+        List<Especie> lista =   mascotaService.listarEspecies();
+        return new ResponseEntity<>(lista,HttpStatus.OK);
+    }
 
 }

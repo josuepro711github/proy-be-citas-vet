@@ -1,11 +1,12 @@
 package com.utp.edu.pe.service;
 
 import com.utp.edu.pe.bean.BodyResponse;
-import com.utp.edu.pe.model.Mascota;
+import com.utp.edu.pe.model.*;
 
-import com.utp.edu.pe.model.Raza;
+import com.utp.edu.pe.repository.EspecieRepository;
 import com.utp.edu.pe.repository.MascotaRepository;
 
+import com.utp.edu.pe.repository.RazaRepository;
 import com.utp.edu.pe.util.Constantes;
 import com.utp.edu.pe.util.PropertiesInterno;
 import org.hibernate.HibernateException;
@@ -26,6 +27,7 @@ import java.io.StringWriter;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class MascotaServiceImpl implements MascotaService{
@@ -35,6 +37,11 @@ public class MascotaServiceImpl implements MascotaService{
     @Autowired
     private MascotaRepository mascotaRepository;
 
+    @Autowired
+    private RazaRepository razaRepository;
+
+    @Autowired
+    private EspecieRepository especieRepository;
     @Autowired
     private ImagenService imagenService;
 
@@ -128,10 +135,30 @@ public class MascotaServiceImpl implements MascotaService{
     }
 
     @Override
-    public Page<Mascota> listarMascota(Pageable pageable) {
-        Page<Mascota> listaMascota = mascotaRepository.findAll(pageable);
-        System.out.println("Lista Mascota: " + mascotaRepository.findAll());
+    public Page<Mascota> listarMascotasPorCliente(Integer id_cliente, Pageable pageable){
+
+        Cliente cliente = new Cliente();
+        cliente.setId_cliente(id_cliente);
+
+        Page<Mascota> listaMascota = mascotaRepository.findByCliente(cliente,pageable);
+
+        if(listaMascota.isEmpty()){
+            return null;
+        }
+
         return listaMascota;
+    }
+
+    @Override
+    public List<Raza> listarRazasPorEspecie(Integer id_especie) {
+        Especie especie = new Especie();
+        especie.setId_especie(id_especie);
+        return razaRepository.findByEspecie(especie);
+    }
+
+    @Override
+    public List<Especie> listarEspecies() {
+        return especieRepository.findAll();
     }
 
 

@@ -1,5 +1,7 @@
 package com.utp.edu.pe.repository;
 
+import com.utp.edu.pe.model.CitaMascota;
+import com.utp.edu.pe.model.Cliente;
 import com.utp.edu.pe.model.Mascota;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,4 +13,6 @@ import org.springframework.stereotype.Repository;
 public interface MascotaRepository extends JpaRepository<Mascota,Integer> {
 
     Page<Mascota> findAll(Pageable pageable);
+
+    Page<Mascota> findByCliente(Cliente cliente, Pageable pageable);
 }

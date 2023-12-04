@@ -53,7 +53,7 @@ public class Constantes {
     public static final String PATH_REGISTRAR_CITA = "/registrarCita";
     public static final String PATH_ELIMINAR_CITA = "/eliminarCita";
     public static final String PATH_ACTUALIZAR_CITA = "/actualizarCita";
-    public static final String PATH_LISTAR_MASCOTAS = "/listarMascotas";
+    public static final String PATH_LISTAR_MASCOTAS_POR_CLIENTE = "/listarMascotasPorCliente/{id_cliente}";
     public static final String PATH_LISTAR_DOCTORES = "/listarDoctores";
 
     //Roles
