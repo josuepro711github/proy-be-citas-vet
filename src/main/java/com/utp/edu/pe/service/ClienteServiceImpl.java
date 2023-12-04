@@ -2,7 +2,6 @@ package com.utp.edu.pe.service;
 
 import com.utp.edu.pe.bean.BodyResponse;
 import com.utp.edu.pe.model.Cliente;
-import com.utp.edu.pe.model.Especialidad;
 import com.utp.edu.pe.model.Usuario;
 import com.utp.edu.pe.repository.ClienteRepository;
 
@@ -59,6 +58,32 @@ public class ClienteServiceImpl implements ClienteService{
             response.setMensajeRespuesta(propertiesInterno.idt2Mensaje.replace(Constantes.TAG_MENSAJE, e.getRootCause().getMessage()));
         }
 
+        return response;
+    }
+
+    @Override
+    public BodyResponse actualizarCliente(Cliente request, MultipartFile imagen) {
+        BodyResponse response = new BodyResponse();
+        try {
+            Cliente clienteEncontrado =clienteRepository.findById(request.getId_cliente()).orElse(null);
+            request.getUsuario().setContrasenia(clienteEncontrado.getUsuario().getContrasenia());
+            if(request.getUsuario().getImagen().equals("cambiado")){
+                imagenService.eliminarImagen(clienteEncontrado.getUsuario().getImagen(),"clientes");
+                String nombreImagen = imagenService.cargarImagen(imagen,"clientes");
+                request.getUsuario().setImagen(nombreImagen);
+            }
+            System.out.println("Request "+ request.getUsuario());
+            Usuario usuarioGuardado = usuarioRepository.saveAndFlush(request.getUsuario());
+            request.setUsuario(usuarioGuardado);
+
+            clienteRepository.saveAndFlush(request);
+            response.setCodigoRespuesta(propertiesInterno.idf0Codigo);
+            response.setMensajeRespuesta(propertiesInterno.idf0Mensaje);
+
+        }catch (DataIntegrityViolationException e){
+            response.setCodigoRespuesta(propertiesInterno.idt2Codigo);
+            response.setMensajeRespuesta(propertiesInterno.idt2Mensaje.replace(Constantes.TAG_MENSAJE, e.getRootCause().getMessage()));
+        }
         return response;
     }
 

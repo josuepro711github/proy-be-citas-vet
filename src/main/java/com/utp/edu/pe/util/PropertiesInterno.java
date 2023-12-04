@@ -20,6 +20,11 @@ public class PropertiesInterno {
     @Value("${idf2.mensaje}")
     public String idf2Mensaje;
 
+    @Value("${idf3.codigo}")
+    public String idf3Codigo;
+    @Value("${idf3.mensaje}")
+    public String idf3Mensaje;
+
     //ERRORES TECNICOS
     @Value("${idt2.codigo}")
     public String idt2Codigo;

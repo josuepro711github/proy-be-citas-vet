@@ -82,13 +82,6 @@ public class DoctorServiceImpl implements DoctorService{
 
             Doctor doctorEncontrado =doctorRepository.findById(request.getId_doctor()).orElse(null);
             request.getUsuario().setContrasenia(doctorEncontrado.getUsuario().getContrasenia());
-//            Especialidad existeEspecialidad = especialidadRepository.findByDescripcion(request.getEspecialidad().getDescripcion());
-//            if(null==existeEspecialidad){
-//                Especialidad especialidadGuardada = especialidadRepository.save(request.getEspecialidad());
-//                request.setEspecialidad(especialidadGuardada);
-//            }else{
-//                request.setEspecialidad(existeEspecialidad);
-//            }
             if(request.getUsuario().getImagen().equals("cambiado")){
                 imagenService.eliminarImagen(doctorEncontrado.getUsuario().getImagen(),"doctores");
                 String nombreImagen = imagenService.cargarImagen(imagen,"doctores");
