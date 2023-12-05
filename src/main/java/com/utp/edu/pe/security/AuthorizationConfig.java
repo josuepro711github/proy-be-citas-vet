@@ -1,6 +1,8 @@
 package com.utp.edu.pe.security;
 
 import com.utp.edu.pe.model.Usuario;
+import com.utp.edu.pe.repository.ClienteRepository;
+import com.utp.edu.pe.repository.DoctorRepository;
 import com.utp.edu.pe.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
@@ -31,6 +33,10 @@ public class AuthorizationConfig extends AuthorizationServerConfigurerAdapter {
 
     @Autowired
     private UsuarioRepository usuarioRepo;
+    @Autowired
+    private ClienteRepository clienteRepository;
+    @Autowired
+    private DoctorRepository doctorRepository;
     @Autowired
     private JwtTokenStore store;
     @Autowired
@@ -83,6 +89,16 @@ public class AuthorizationConfig extends AuthorizationServerConfigurerAdapter {
                 infoAdicional.put("fecha y hora", fechaHoraActualString);
                 infoAdicional.put("rol", usuario.getRol().getId_rol());
                 infoAdicional.put("descripcion rol", usuario.getRol().getTipo_rol());
+
+                System.out.println("rol: "  + usuario.getRol().getTipo_rol());
+
+                System.out.println("usuario: "  + usuario);
+                Integer id = usuario.getRol().getTipo_rol().equals("CLIENTE")?
+                        clienteRepository.findByUsuario(usuario).getId_cliente():
+                        (usuario.getRol().getTipo_rol().equals("DOCTOR"))?
+                                doctorRepository.findByUsuario(usuario).getId_doctor():
+                                usuario.getId_usuario();
+                infoAdicional.put("id_"+usuario.getRol().getTipo_rol().toLowerCase(), id);
 
 
                 DefaultOAuth2AccessToken token = new DefaultOAuth2AccessToken(accessToken);
