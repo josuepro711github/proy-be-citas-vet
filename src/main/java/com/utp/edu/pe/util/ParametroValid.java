@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.utp.edu.pe.exception.ConvertException;
 import com.utp.edu.pe.model.Doctor;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -46,7 +47,6 @@ public class ParametroValid {
             //Validar Usuario
             if ((null == request.getUsuario().getEmail() || Constantes.TEXTO_VACIO.equalsIgnoreCase(request.getUsuario().getEmail().trim()))
                     || (!validarEmail(request.getUsuario().getEmail()))) {
-
                 System.out.println("email");
                 validCodeRegistrarDoctor = "email";
                 throw new ConvertException(validCodeRegistrarDoctor);
@@ -57,6 +57,26 @@ public class ParametroValid {
             return validCodeRegistrarDoctor;
         }
         return validCodeRegistrarDoctor;
+    }
+
+    public static String validarActualizarCliente(Cliente request) throws ConvertException {
+        String validActualizarCliente = Constantes.CADENA_CERO;
+
+        try {
+            if (null==request.getId_cliente() || request.getId_cliente() == 0) {
+                validActualizarCliente = "idCliente";
+                throw new ConvertException(validActualizarCliente);
+            }
+            if(null==request.getUsuario().getId_usuario() || request.getUsuario().getImagen().isEmpty() || !request.getUsuario().getImagen().equals("cambiado")){
+                validActualizarCliente = "imagen";
+                throw new ConvertException(validActualizarCliente);
+            }
+        } catch (ConvertException c) {
+            LOG.error(Constantes.ERROR_FLAG, c);
+            validActualizarCliente = c.getMessage();
+            return validActualizarCliente;
+        }
+        return validActualizarCliente;
     }
 
     public static String validarRegistrarMascota(Mascota request) throws ConvertException {
