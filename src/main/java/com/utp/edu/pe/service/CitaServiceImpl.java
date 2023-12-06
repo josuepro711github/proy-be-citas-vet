@@ -68,14 +68,9 @@ public class CitaServiceImpl implements CitaService{
             }
 
             Cita citaRegistrada = citaRepository.saveAndFlush(request.getCita());
+            request.setCita(citaRegistrada);
 
-            CitaMascota citaMasNew = new CitaMascota();
-            citaMasNew.setCita(citaRegistrada);
-            citaMasNew.setMascota(request.getMascota());
-
-            response = citaMascotaRepository.save(citaMasNew);
-
-
+            response = request;
 
         } catch (DataIntegrityViolationException e){
             System.out.println("error: "+ e.getMessage());
@@ -134,7 +129,7 @@ public class CitaServiceImpl implements CitaService{
     public Cita cancelarCita(Integer id_cita) {
         Cita cita = citaRepository.findById(id_cita).orElse(null);
         if (cita != null){
-            cita.setEstado(2);
+            cita.setEstado(3);
             citaRepository.saveAndFlush(cita);
         }
         return cita;
