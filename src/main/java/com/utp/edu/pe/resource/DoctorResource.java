@@ -147,6 +147,14 @@ public class DoctorResource {
         return new ResponseEntity<>(lista,HttpStatus.OK);
     }
 
+    @GetMapping(value = "/listaDoctoresPorEspecialidad/{id_especialidad}")
+    public ResponseEntity<List<Doctor>> listaDoctoresPorEspecialidad(@PathVariable("id_especialidad") Integer id_especialidad){
+        Especialidad e = new Especialidad();
+        e.setId_especialidad(id_especialidad);
+        List<Doctor> lista =   doctorService.listaDoctoresPorEspecialidad(e);
+        return new ResponseEntity<>(lista,HttpStatus.OK);
+    }
+
     @GetMapping(value = "/buscar/{id_doctor}")
     public ResponseEntity<Doctor> buscarDoctor(@PathVariable("id_doctor") Integer id_doctor){
         Doctor doctor = doctorService.buscarDoctor(id_doctor);
