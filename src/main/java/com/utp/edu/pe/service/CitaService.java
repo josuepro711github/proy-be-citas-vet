@@ -1,5 +1,7 @@
 package com.utp.edu.pe.service;
+
 import com.utp.edu.pe.bean.BodyResponse;
+import com.utp.edu.pe.model.Cita;
 import com.utp.edu.pe.model.CitaMascota;
 import com.utp.edu.pe.repository.CitaMascotaRepository;
 import org.springframework.data.domain.Page;
