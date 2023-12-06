@@ -18,4 +18,7 @@ public interface DoctorService {
     public Doctor buscarDoctor(Integer id);
 
     public Doctor eliminarDoctor(Integer id);
+
+    List<Doctor> listaDoctoresPorEspecialidad(Especialidad especialidad);
+
 }

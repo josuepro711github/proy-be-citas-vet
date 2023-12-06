@@ -147,6 +147,10 @@ public class DoctorServiceImpl implements DoctorService{
         return buscarDoctor;
     }
 
+    @Override
+    public List<Doctor> listaDoctoresPorEspecialidad(Especialidad especialidad) {
+        return doctorRepository.findByEspecialidad(especialidad);
+    }
 
 
 }
