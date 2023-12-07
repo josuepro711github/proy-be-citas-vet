@@ -88,7 +88,7 @@ public class MascotaResource {
         Mascota lista =   mascotaService.eliminarMascota(id_mascota);
         return new ResponseEntity<>(lista,HttpStatus.OK);
     }
-
+    //gaaaaaaaaaaa
 
     @GetMapping(value = "/listarRazasPorEspecie/{id_especie}")
     public ResponseEntity<List<Raza>> listarRazasPorEspecie(@PathVariable("id_especie") Integer id_especie){
