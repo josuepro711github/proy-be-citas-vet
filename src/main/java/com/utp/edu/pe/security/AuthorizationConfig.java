@@ -83,7 +83,6 @@ public class AuthorizationConfig extends AuthorizationServerConfigurerAdapter {
                 infoAdicional.put("nombre", usuario.getNombre());
                 infoAdicional.put("apellido_paterno", usuario.getApellido_paterno());
                 infoAdicional.put("apellido_materno", usuario.getApellido_materno());
-                infoAdicional.put("imagen", usuario.getImagen());
                 infoAdicional.put("email", email);
                 infoAdicional.put("imagen", usuario.getImagen());
                 infoAdicional.put("fecha_hora", fechaHoraActualString);

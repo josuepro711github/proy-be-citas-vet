@@ -53,7 +53,7 @@ public class CustomOauthExceptionSerializer extends StdSerializer<CustomOauthExc
         jsonGenerator.writeNumberField("code", value.getHttpErrorCode());
         jsonGenerator.writeBooleanField("status", false);
         jsonGenerator.writeObjectField("respuesta", tipoFallo);
-        jsonGenerator.writeObjectField("recomendacion", username+" ve por tu gatita ");
+        jsonGenerator.writeObjectField("recomendacion", username+" Intenta con otra contraseña");
         jsonGenerator.writeObjectField("errors", Arrays.asList(value.getOAuth2ErrorCode(),value.getMessage()));
         if (value.getAdditionalInformation()!=null) {
             for (Map.Entry<String, String> entry : value.getAdditionalInformation().entrySet()) {
