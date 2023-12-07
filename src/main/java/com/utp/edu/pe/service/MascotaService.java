@@ -19,4 +19,6 @@ public interface MascotaService {
 
     public List<Raza> listarRazasPorEspecie(Integer id_especie);
     public List<Especie> listarEspecies();
+
+    public Mascota eliminarMascota(Integer id_mascota);
 }

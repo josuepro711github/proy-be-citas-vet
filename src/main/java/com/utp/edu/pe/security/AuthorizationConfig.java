@@ -93,9 +93,9 @@ public class AuthorizationConfig extends AuthorizationServerConfigurerAdapter {
                 System.out.println("rol: "  + usuario.getRol().getTipo_rol());
 
                 System.out.println("usuario: "  + usuario);
-                Integer id = usuario.getRol().getTipo_rol().equals("CLIENTE")?
+                Integer id = usuario.getRol().getTipo_rol().toLowerCase().equals("CLIENTE".toLowerCase())?
                         clienteRepository.findByUsuario(usuario).getId_cliente():
-                        (usuario.getRol().getTipo_rol().equals("DOCTOR"))?
+                        (usuario.getRol().getTipo_rol().toLowerCase().equals("DOCTOR".toLowerCase()))?
                                 doctorRepository.findByUsuario(usuario).getId_doctor():
                                 usuario.getId_usuario();
                 infoAdicional.put("id_"+usuario.getRol().getTipo_rol().toLowerCase(), id);

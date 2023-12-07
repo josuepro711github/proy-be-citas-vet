@@ -116,6 +116,11 @@ public class MascotaResource {
         return mascotas;
     }
 
+    @DeleteMapping(value = "/eliminarMascota/{id_mascota}")
+    public ResponseEntity<Mascota> eliminarMascota(@PathVariable("id_mascota") Integer id_mascota){
+        Mascota lista =   mascotaService.eliminarMascota(id_mascota);
+        return new ResponseEntity<>(lista,HttpStatus.OK);
+    }
 
 
     @GetMapping(value = "/listarRazasPorEspecie/{id_especie}")
