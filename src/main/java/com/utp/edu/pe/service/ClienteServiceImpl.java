@@ -62,8 +62,8 @@ public class ClienteServiceImpl implements ClienteService{
     }
 
     @Override
-    public BodyResponse actualizarCliente(Cliente request, MultipartFile imagen) {
-        BodyResponse response = new BodyResponse();
+    public Cliente actualizarCliente(Cliente request, MultipartFile imagen) {
+        Cliente response = new Cliente();
         try {
             Cliente clienteEncontrado =clienteRepository.findById(request.getId_cliente()).orElse(null);
             request.getUsuario().setContrasenia(clienteEncontrado.getUsuario().getContrasenia());
@@ -75,14 +75,10 @@ public class ClienteServiceImpl implements ClienteService{
             System.out.println("Request "+ request.getUsuario());
             Usuario usuarioGuardado = usuarioRepository.saveAndFlush(request.getUsuario());
             request.setUsuario(usuarioGuardado);
-
-            clienteRepository.saveAndFlush(request);
-            response.setCodigoRespuesta(propertiesInterno.idf0Codigo);
-            response.setMensajeRespuesta(propertiesInterno.idf0Mensaje);
+            response.setUsuario(usuarioGuardado);
 
         }catch (DataIntegrityViolationException e){
-            response.setCodigoRespuesta(propertiesInterno.idt2Codigo);
-            response.setMensajeRespuesta(propertiesInterno.idt2Mensaje.replace(Constantes.TAG_MENSAJE, e.getRootCause().getMessage()));
+            System.out.println(e.getMessage() + e);
         }
         return response;
     }

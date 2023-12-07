@@ -91,6 +91,7 @@ public class AuthorizationConfig extends AuthorizationServerConfigurerAdapter {
                 infoAdicional.put("descripcion_rol", usuario.getRol().getTipo_rol());
                 infoAdicional.put("dni", usuario.getDni());
                 infoAdicional.put("telefono", usuario.getTelefono());
+                infoAdicional.put("fecha_nacimiento", usuario.getFecha_nacimiento());
 
                 System.out.println("rol: "  + usuario.getRol().getTipo_rol());
 
