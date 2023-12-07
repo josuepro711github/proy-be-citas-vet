@@ -6,5 +6,5 @@ import org.springframework.web.multipart.MultipartFile;
 
 public interface ClienteService {
     public BodyResponse registrarCliente(Cliente request, MultipartFile imagen);
-    public BodyResponse actualizarCliente(Cliente request, MultipartFile imagen);
+    public Cliente actualizarCliente(Cliente request, MultipartFile imagen);
 }

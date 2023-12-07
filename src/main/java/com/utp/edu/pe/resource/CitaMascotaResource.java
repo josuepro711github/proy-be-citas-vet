@@ -56,8 +56,6 @@ public class CitaMascotaResource {
             return ResponseEntity.ok(citaMascotaRegistrada);
         }
         return new ResponseEntity<CitaMascota>(citaMascotaRegistrada, HttpStatus.INTERNAL_SERVER_ERROR);
-
-
     }
 
 
