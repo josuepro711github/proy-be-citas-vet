@@ -39,7 +39,7 @@ public class Mascota {
     @JoinColumn(name = "id_cliente",referencedColumnName = "id_cliente")
     private Cliente cliente;
 
-
+    private String estado;
     public Integer getId_mascota() {
         return id_mascota;
     }
@@ -94,5 +94,13 @@ public class Mascota {
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 }

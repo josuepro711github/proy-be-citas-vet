@@ -161,5 +161,15 @@ public class MascotaServiceImpl implements MascotaService{
         return especieRepository.findAll();
     }
 
+    @Override
+    public Mascota eliminarMascota(Integer id_mascota) {
+        Mascota mascota = mascotaRepository.findById(id_mascota).orElse(null);
+        if(mascota !=null){
+            mascota.setEstado("eliminado");
+            mascotaRepository.saveAndFlush(mascota);
+        }
+        return mascota;
+    }
+
 
 }

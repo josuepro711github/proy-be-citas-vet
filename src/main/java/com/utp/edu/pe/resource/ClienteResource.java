@@ -125,4 +125,5 @@ public class ClienteResource {
         return new ResponseEntity<>(lista, HttpStatus.OK);
     }
 
+
 }
